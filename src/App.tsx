@@ -1,11 +1,21 @@
+import React, {Fragment} from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+
+import CharactersPage from './pages/CharactersPage';
+import CharacterDetails from './pages/CharacterDetails';
 import './App.css';
+import PageNotFound from './pages/PageNotFound';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-      </header>
-    </div>
+    <Fragment>
+      <Routes>
+        <Route path='/' element={<Navigate to='/characters' replace></Navigate>} />
+        <Route path='/characters' element={<CharactersPage />} />
+        <Route path='/characters/:id' element={<CharacterDetails />} />
+        <Route path='*' element={<PageNotFound />} />
+      </Routes>
+    </Fragment>
   );
 }
 
