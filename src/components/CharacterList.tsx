@@ -50,7 +50,7 @@ const CharacterList: React.FC<{
             Prev
           </button>
         )}
-        <p>{currentPage}</p>
+        <p>Current page: {currentPage}</p>
         {shouldShowNextButton && (
           <button type="button" onClick={nextButtonClickHandler}>
             Next
