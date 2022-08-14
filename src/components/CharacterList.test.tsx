@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import Character from "../model/Character";
 import CharacterList from "./CharacterList";
 import * as DUMMY_DATA from "../../public/DUMMY_DATA.json";
@@ -42,12 +36,15 @@ describe("[Component] Character List", () => {
     expect(nextButton).toHaveTextContent("Next");
   });
 
-  test("renders previous button when there is more content to see", () => {
-    renderList({ total: 5, offset: 4 });
+  test("renders previous button when there is more content to see", async () => {
+    renderList({ total: 50, offset: 4 });
 
     const nextButton = screen.getByRole("button");
-    expect(nextButton).toBeInTheDocument();
-    expect(nextButton).toHaveTextContent("Prev");
+    act(() => nextButton.click());
+
+    const prevButton = screen.getAllByRole("button")[0];
+    expect(prevButton).toBeInTheDocument();
+    expect(prevButton).toHaveTextContent("Prev");
   });
 
   test("doesn't render buttons when there isn't more content to see", () => {
@@ -70,7 +67,7 @@ describe("[Component] Character List", () => {
   test("if when prev button is clicked, current page increments", async () => {
     renderList({ total: 50, offset: 4 });
 
-    const nextButton = screen.getAllByRole("button")[1];
+    const nextButton = screen.getByRole("button");
     act(() => {
       nextButton.click();
       nextButton.click();
@@ -84,13 +81,16 @@ describe("[Component] Character List", () => {
   });
 
   test("if when prev button is clicked, current page remains at zero", async () => {
-    renderList({ total: 5, offset: 4 });
+    renderList({ total: 50, offset: 4 });
 
-    const prevButton = screen.getByRole("button");
+    const nextButton = screen.getByRole("button");
+    act(() => nextButton.click());
+
+    const prevButton = screen.getAllByRole("button")[0];
     act(() => prevButton.click());
     act(() => prevButton.click());
 
-    const currentPage = await screen.findByText("Current page: 0");
+    const currentPage = await screen.findByText("Current page: 1");
     expect(currentPage).toBeInTheDocument();
   });
 });

@@ -16,10 +16,7 @@ const CharactersPage = () => {
   const { isLoading, error, sendRequest } = useHttp();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("DUMMY_DATA.json");
-      const responseContent: APIResponse = await response.json();
-
+    const transformData = async (responseContent: APIResponse) => {
       const character = responseContent.data.results.map(
         (characterData: APICharacterData) => new Character(characterData)
       );
@@ -31,8 +28,8 @@ const CharactersPage = () => {
       console.log(character);
     };
 
-    fetchData();
-  }, []);
+    sendRequest({ url: "DUMMY_DATA.json" }, transformData);
+  }, [sendRequest]);
 
   const backButtonClickHandler = () => {};
 
