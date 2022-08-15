@@ -1,9 +1,13 @@
 import React, { Fragment, useCallback, useContext, useEffect } from "react";
 import CharacterList from "../components/CharacterList";
+import Filters from "../components/Filters";
+import SortBy from "../components/SortBy";
 import useHttp from "../hooks/use-http";
 import { Api } from "../store/api-data";
 import { Characters } from "../store/character-data";
 import { APIResponse } from "../types/Character.d";
+
+import classes from "../styles/pages/ChangePages.module.css";
 
 const CharactersPage = () => {
   const { apiKey } = useContext(Api);
@@ -33,16 +37,30 @@ const CharactersPage = () => {
     //nextButtonClick();
   };
 
+  const handleFiltersSubmit = (filters: string) => {
+    console.log(filters);
+
+    //sendRequest({ url: "DUMMY_DATA_PAGE_2.json" }, transformData);
+  };
+
+  const handleSortSubmit = useCallback((sortBy: string) => {
+    console.log("oh no", sortBy);
+
+    //sendRequest({ url: "DUMMY_DATA_PAGE_2.json" }, transformData);
+  }, []);
+
   useEffect(() => {
     sendRequest({ url: "DUMMY_DATA.json" }, transformData);
   }, [sendRequest, transformData]);
 
   return (
     <Fragment>
-      <header className="App-header">
-        <h1>Marvel Finder</h1>
+      <header className={classes["App-header"]}>
+        <h1 className={classes["App-header__heading"]}>Marvel Finder</h1>
       </header>
       <main>
+        <Filters onFiltersSubmit={handleFiltersSubmit} />
+        <SortBy sortClickHandler={handleSortSubmit} />
         {!isLoading && state.charactersList && (
           <CharacterList
             charactersList={state.charactersList}

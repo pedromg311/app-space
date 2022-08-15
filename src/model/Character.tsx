@@ -16,6 +16,7 @@ class Character {
   stories: TransformedCharacterType;
   events: TransformedCharacterType;
   urls: URL;
+  modified: string;
 
   constructor(characterData: APICharacterData) {
     const {
@@ -28,6 +29,7 @@ class Character {
       stories,
       events,
       urls,
+      modified,
     } = characterData;
 
     this.id = id;
@@ -39,6 +41,7 @@ class Character {
     this.stories = this.transformResourceItem(stories);
     this.events = this.transformResourceItem(events);
     this.urls = urls;
+    this.modified = modified;
   }
 
   /**

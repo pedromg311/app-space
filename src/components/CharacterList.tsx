@@ -15,8 +15,10 @@ const CharacterList: React.FC<{
     <Fragment>
       <ul>
         {props.charactersList.map((character) => (
-          <li key={character.id}>
-            <NavLink to={`${character.id}`}>{character.name}</NavLink>
+          <li className="test-class" key={character.id}>
+            <NavLink to={`${character.id}`}>
+              {character.name} {character.modified}
+            </NavLink>
           </li>
         ))}
       </ul>
