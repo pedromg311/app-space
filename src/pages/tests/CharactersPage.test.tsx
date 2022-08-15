@@ -1,7 +1,9 @@
 import React from "react";
 import { act, render, screen } from "@testing-library/react";
-import * as DUMMY_DATA from "../../public/DUMMY_DATA.json";
-import CharactersPage from "../pages/CharactersPage";
+import * as DUMMY_DATA from "../../../public/DUMMY_DATA.json";
+import CharactersPage from "../CharactersPage";
+import { BrowserRouter } from "react-router-dom";
+import { CharactersProvider } from "../../store/character-data";
 
 describe("[Page] Characters Page", () => {
   beforeAll(() => {
@@ -13,7 +15,13 @@ describe("[Page] Characters Page", () => {
   });
   beforeEach(() =>
     act(() => {
-      render(<CharactersPage />);
+      render(
+        <BrowserRouter>
+          <CharactersProvider>
+            <CharactersPage />
+          </CharactersProvider>
+        </BrowserRouter>
+      );
     })
   );
   afterAll(() => jest.resetAllMocks());
@@ -22,7 +30,7 @@ describe("[Page] Characters Page", () => {
     const header = screen.getByText("Marvel Finder");
     const footer = screen.getByText("Done by Pedro Gomes 2022-08-14");
 
-    expect(listElements).toHaveLength(21);
+    expect(listElements).toHaveLength(11);
     expect(header).toBeInTheDocument();
     expect(footer).toBeInTheDocument();
   });

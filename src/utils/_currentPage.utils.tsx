@@ -2,10 +2,9 @@ import Character from "../model/Character";
 import { APICharacterData, APIResponse } from "../types/Character.d";
 import { ListState, ReducerActions } from "../types/CharacterList.d";
 
-const numberOfResultsPerPage = 15;
-
 const shouldEnableNextArrow = (
   numberOfResults: number,
+  numberOfResultsPerPage: number,
   currentOffset: number
 ): boolean => {
   const numberOfStillAvailableItems =
@@ -17,11 +16,13 @@ const shouldEnableNextArrow = (
 };
 
 const nextClickAction = (state: ListState) => {
-  const currentOffset = state.currentOffset + numberOfResultsPerPage;
+  const currentOffset = state.currentOffset + state.numberOfResultsPerPage;
   const currentPage = state.currentPage + 1;
 
+  //FIXME: do i need this here?
   const shouldShowNextButton = shouldEnableNextArrow(
     state.numberOfResults,
+    state.numberOfResultsPerPage,
     currentOffset
   );
   const shouldShowPrevButton = currentPage > 1;
@@ -42,6 +43,7 @@ const prevClickAction = (state: ListState) => {
     const shouldShowPrevButton = newState.currentPage !== 1;
 
     newState.currentPage = state.currentPage - 1;
+    //FIXME: do i need this here?
     newState.shouldShowPrevButton = shouldShowPrevButton;
     newState.shouldShowNextButton = true;
   }
@@ -59,13 +61,14 @@ const setCharactersList = (
   const { total: numberOfResults, offset: currentOffset } =
     action.responseContent.data;
 
-  const currentPage = Math.max(
-    Math.ceil(action.responseContent.data.offset / numberOfResultsPerPage),
-    1
-  );
+  const currentPage =
+    Math.ceil(
+      action.responseContent.data.offset / state.numberOfResultsPerPage
+    ) + 1;
 
   const shouldShowNextButton = shouldEnableNextArrow(
     numberOfResults,
+    state.numberOfResultsPerPage,
     currentOffset
   );
   const shouldShowPrevButton = currentPage > 1;

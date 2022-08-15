@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { NavLink } from "react-router-dom";
 import Character from "../model/Character";
 
 const CharacterList: React.FC<{
@@ -14,7 +15,9 @@ const CharacterList: React.FC<{
     <Fragment>
       <ul>
         {props.charactersList.map((character) => (
-          <li key={character.id}>{character.name}</li>
+          <li key={character.id}>
+            <NavLink to={`${character.id}`}>{character.name}</NavLink>
+          </li>
         ))}
       </ul>
       <div>

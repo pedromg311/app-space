@@ -7,6 +7,7 @@ export type ListState = {
   currentPage: number;
   numberOfResults: number;
   currentOffset: number;
+  numberOfResultsPerPage: number;
   charactersList: Character[] | null;
 };
 

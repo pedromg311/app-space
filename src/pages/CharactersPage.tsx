@@ -1,49 +1,41 @@
-import React, { Fragment, useCallback, useEffect, useReducer } from "react";
+import React, { Fragment, useCallback, useContext, useEffect } from "react";
 import CharacterList from "../components/CharacterList";
 import useHttp from "../hooks/use-http";
+import { Api } from "../store/api-data";
+import { Characters } from "../store/character-data";
 import { APIResponse } from "../types/Character.d";
-import { ListState } from "../types/CharacterList.d";
-import { buttonAndPageReducer } from "../utils/_currentPage.utils";
-
-const initialState: ListState = {
-  shouldShowPrevButton: false,
-  shouldShowNextButton: true,
-  currentPage: 1,
-  numberOfResults: 0,
-  currentOffset: 0,
-  charactersList: null,
-};
 
 const CharactersPage = () => {
-  /**
-   * Not strictly necessary to user a reducer here, but i want current page
-   * to affect the state of the previous button, instead of doing currentOffset > 0
-   */
-  const [state, dispatch] = useReducer(buttonAndPageReducer, initialState);
+  const { apiKey } = useContext(Api);
+  const { state, setCharactersList, prevButtonClick, nextButtonClick } =
+    useContext(Characters);
   const { isLoading, error, sendRequest } = useHttp();
 
-  const transformData = async (responseContent: APIResponse) => {
-    dispatch({
-      type: "SET_CHARACTER_LIST",
-      payload: { responseContent },
-    });
-  };
+  const transformData = useCallback(
+    (responseContent: APIResponse) => {
+      setCharactersList(responseContent);
+    },
+    [setCharactersList]
+  );
 
   const backButtonClickHandler = () => {
     sendRequest({ url: "DUMMY_DATA.json" }, transformData);
 
-    dispatch({ type: "PREV_CLICK" });
+    //prevButtonClick();
   };
 
   const nextButtonClickHandler = () => {
-    sendRequest({ url: "DUMMY_DATA.json" }, transformData);
+    const nextOffset = state.numberOfResultsPerPage + state.currentOffset;
+    const urlArgs = `?offset=${nextOffset}&apikey=${apiKey}`;
 
-    dispatch({ type: "NEXT_CLICK" });
+    sendRequest({ url: "DUMMY_DATA_PAGE_2.json" }, transformData);
+
+    //nextButtonClick();
   };
 
   useEffect(() => {
     sendRequest({ url: "DUMMY_DATA.json" }, transformData);
-  }, [sendRequest]);
+  }, [sendRequest, transformData]);
 
   return (
     <Fragment>

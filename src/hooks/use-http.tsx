@@ -28,7 +28,6 @@ const useHttp = () => {
             response.status === 404 ? "Resource not found" : "Request failed!"
           );
         }
-
         const data = await response.json();
 
         applyData(data);
