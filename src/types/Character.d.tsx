@@ -29,7 +29,7 @@ export type APICharacterData = {
   id: number;
   name: string;
   description: string;
-  modified: Date;
+  modified: string;
   resourceURI: string;
   urls: URL;
   thumbnail: Thumbnail;
