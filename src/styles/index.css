@@ -1,15 +1,20 @@
 :root {
-  --main-color: #1e90ff;
-  --secondary-color: #ffffff;
+  --main-color: #f4b16c;
+  --secondary-color: #ffc0ba;
+  --tertiary-color: #ff8885;
+  --font-color: #c35353;
+
+  --spacing-large: 24px;
+  --spacing-medium: 16px;
+  --spacing-small: 8px;
 }
 
 html,
 body {
+  font-family: "Orkney", sans-serif;
+
   background-color: var(--main-color);
 
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -2,6 +2,8 @@ import React, { Fragment } from "react";
 import { NavLink } from "react-router-dom";
 import Character from "../model/Character";
 
+import classes from "../styles/components/CharacterList.module.css";
+
 const CharacterList: React.FC<{
   backButtonClickHandler: () => void;
   nextButtonClickHandler: () => void;
@@ -13,29 +15,56 @@ const CharacterList: React.FC<{
 }> = (props) => {
   return (
     <Fragment>
-      <ul>
+      <p>Number of results: {props.numberOfResults}</p>
+      <ul className={classes["Character-List"]}>
         {props.charactersList.map((character) => (
-          <li className="test-class" key={character.id}>
-            <NavLink to={`${character.id}`}>
-              {character.name} {character.modified}
+          <li className={classes["Character-List__item"]} key={character.id}>
+            <NavLink
+              to={`${character.id}`}
+              className={classes["Character-List__item-content"]}
+            >
+              <img
+                className={classes["Character-List__item-image"]}
+                alt={`An image of ${character.name}`}
+                src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
+              />
+              <div className={classes["Character-List__item-info"]}>
+                <p className={classes["Character-List__item-name"]}>
+                  {character.name}
+                </p>
+                {character.comics.available !== 0 && (
+                  <p>Appears in {character.comics.available} comics!</p>
+                )}
+              </div>
             </NavLink>
           </li>
         ))}
       </ul>
-      <div>
+      <div className={classes["Character-List__controls"]}>
         {props.shouldShowPrevButton && (
-          <button type="button" onClick={props.backButtonClickHandler}>
+          <button
+            className={classes["Character-List__controls-button"]}
+            type="button"
+            onClick={props.backButtonClickHandler}
+          >
             Prev
           </button>
         )}
-        <p>Current page: {props.currentPage}</p>
+        {(props.shouldShowPrevButton || props.shouldShowNextButton) && (
+          <p className={classes["Character-List__controls-info"]}>
+            Current page: {props.currentPage}
+          </p>
+        )}
         {props.shouldShowNextButton && (
-          <button type="button" onClick={props.nextButtonClickHandler}>
+          <button
+            className={classes["Character-List__controls-button"]}
+            type="button"
+            onClick={props.nextButtonClickHandler}
+          >
             Next
           </button>
         )}
       </div>
-      <p>Number of results: {props.numberOfResults}</p>
     </Fragment>
   );
 };
