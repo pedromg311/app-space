@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SortOptions } from "../types/SortBy.d";
 
+import classes from "../styles/components/SortBy.module.css";
+
 const sortingOptions: SortOptions = {
   currentlyActiveIndex: -1,
   options: [
@@ -33,10 +35,9 @@ const SortBy: React.FC<{ sortClickHandler: (sortBy: string) => void }> = (
   const { sortClickHandler } = props;
   let [searchParams, setSearchParams] = useSearchParams();
   const [sortOptions, setSortOptions] = useState(sortingOptions);
+  const currentOrderBy = searchParams.get("orderBy");
 
   useEffect(() => {
-    const currentOrderBy = searchParams.get("orderBy");
-
     let currentIndex = sortOptions.options.findIndex((option) =>
       currentOrderBy?.includes(option.encodedName)
     );
@@ -49,12 +50,13 @@ const SortBy: React.FC<{ sortClickHandler: (sortBy: string) => void }> = (
       setSearchParams({ orderBy: sortingOptions.options[0].encodedName });
     }
 
-    setSortOptions((state) => ({ ...state, currentIndex }));
-  }, [sortOptions.options, searchParams, setSearchParams]);
+    setSortOptions((state) => ({
+      ...state,
+      currentlyActiveIndex: currentIndex,
+    }));
+  }, [sortOptions.options, searchParams, setSearchParams, currentOrderBy]);
 
   const handleButtonClick = (index: number) => {
-    const currentOrderBy = searchParams.get("orderBy");
-
     const { encodedName } = sortOptions.options[index];
     const isSameSorting = currentOrderBy?.includes(encodedName);
 
@@ -66,21 +68,27 @@ const SortBy: React.FC<{ sortClickHandler: (sortBy: string) => void }> = (
     sortClickHandler(`orderBy=${orderBy}`);
   };
 
+  console.log(sortOptions.currentlyActiveIndex);
   return (
-    <div>
-      <ul>
-        {sortingOptions.options.map((option, index) => {
-          //FIXME: fix classname
+    <div className={classes["SortBy"]}>
+      <p className={classes["SortBy__title"]}>Sort by:</p>
+      <ul className={classes["SortBy__options"]}>
+        {sortOptions.options.map((option, index) => {
           return (
-            <li
-              className={
-                sortingOptions.currentlyActiveIndex === index ? "active" : ""
-              }
-              key={option.name}
-            >
-              <button onClick={handleButtonClick.bind(null, index)}>
+            <li className={classes["SortBy__options-item"]} key={option.name}>
+              <button
+                className={`${classes["SortBy__options-button"]} ${
+                  sortOptions.currentlyActiveIndex == index
+                    ? classes["SortBy__options-button--active"]
+                    : ""
+                }`}
+                onClick={handleButtonClick.bind(null, index)}
+              >
                 {option.name}
               </button>
+              <span className={classes["SortBy__options-button--direction"]}>
+                {currentOrderBy?.includes("-") ? "↓" : "↑"}
+              </span>
             </li>
           );
         })}

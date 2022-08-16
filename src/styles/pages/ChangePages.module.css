@@ -18,3 +18,33 @@
   height: 50%;
   margin-right: 12px;
 }
+
+/****  MAIN ****/
+
+.App-main {
+  margin: 0 var(--spacing-medium);
+}
+
+.App-main__list-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+
+  margin-top: var(--spacing-large);
+}
+
+.App-main__list-results {
+  text-align: end;
+}
+
+/***/
+
+.App-footer {
+  display: flex;
+  justify-content: flex-end;
+
+  padding: var(--spacing-small);
+
+  text-align: end;
+}

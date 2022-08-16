@@ -8,14 +8,12 @@ const CharacterList: React.FC<{
   backButtonClickHandler: () => void;
   nextButtonClickHandler: () => void;
   charactersList: Character[];
-  numberOfResults: number;
   currentPage: number;
   shouldShowPrevButton: boolean;
   shouldShowNextButton: boolean;
 }> = (props) => {
   return (
     <Fragment>
-      <p>Number of results: {props.numberOfResults}</p>
       <ul className={classes["Character-List"]}>
         {props.charactersList.map((character) => (
           <li className={classes["Character-List__item"]} key={character.id}>
@@ -25,11 +23,14 @@ const CharacterList: React.FC<{
             >
               <img
                 className={classes["Character-List__item-image"]}
-                alt={`An image of ${character.name}`}
+                alt=""
                 src={`${character.thumbnail.path}.${character.thumbnail.extension}`}
               />
               <div className={classes["Character-List__item-info"]}>
-                <p className={classes["Character-List__item-name"]}>
+                <p
+                  className={classes["Character-List__item-name"]}
+                  aria-label={`A card with an image of ${character.name}`}
+                >
                   {character.name}
                 </p>
                 {character.comics.available !== 0 && (
@@ -47,7 +48,7 @@ const CharacterList: React.FC<{
             type="button"
             onClick={props.backButtonClickHandler}
           >
-            Prev
+            {"<<"}
           </button>
         )}
         {(props.shouldShowPrevButton || props.shouldShowNextButton) && (
@@ -61,7 +62,7 @@ const CharacterList: React.FC<{
             type="button"
             onClick={props.nextButtonClickHandler}
           >
-            Next
+            {">>"}
           </button>
         )}
       </div>

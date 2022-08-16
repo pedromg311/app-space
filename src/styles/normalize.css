@@ -55,6 +55,11 @@ a {
   background-color: transparent;
 }
 
+button {
+  border: none;
+  background: transparent;
+}
+
 /* Embedded content
    ========================================================================== */
 

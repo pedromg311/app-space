@@ -64,9 +64,14 @@ const CharactersPage = () => {
         />
         <h1 className={classes["App-header__heading"]}>Marvel Finder</h1>
       </header>
-      <main>
+      <main className={classes["App-main"]}>
         <Filters onFiltersSubmit={handleFiltersSubmit} />
-        <SortBy sortClickHandler={handleSortSubmit} />
+        <div className={classes["App-main__list-heading"]}>
+          <SortBy sortClickHandler={handleSortSubmit} />
+          <p className={classes["App-main__list-results"]}>
+            Results: {state.numberOfResults}
+          </p>
+        </div>
         {!isLoading && state.charactersList && (
           <CharacterList
             charactersList={state.charactersList}
@@ -74,13 +79,12 @@ const CharactersPage = () => {
             nextButtonClickHandler={nextButtonClickHandler}
             shouldShowPrevButton={state.shouldShowPrevButton}
             shouldShowNextButton={state.shouldShowNextButton}
-            numberOfResults={state.numberOfResults}
             currentPage={state.currentPage}
           />
         )}
       </main>
       <footer>
-        <p>Done by Pedro Gomes 2022-08-14</p>
+        <small className={classes["App-footer"]}>Done by Pedro Gomes</small>
       </footer>
     </Fragment>
   );

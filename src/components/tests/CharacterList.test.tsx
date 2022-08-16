@@ -17,7 +17,6 @@ const renderList = (numberOfResults = 500, currentPage = 1) => {
         charactersList={CharacterListMock}
         backButtonClickHandler={() => {}}
         nextButtonClickHandler={() => {}}
-        numberOfResults={numberOfResults}
         shouldShowPrevButton={false}
         shouldShowNextButton={false}
         currentPage={currentPage}

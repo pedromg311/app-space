@@ -1,5 +1,5 @@
 .Character-List {
-  margin: var(--spacing-large) var(--spacing-medium);
+  margin: var(--spacing-large) 0 var(--spacing-medium) 0;
 
   /*Helps with CLS*/
   min-height: 300px;
@@ -52,16 +52,23 @@
 .Character-List__controls {
   display: flex;
   justify-content: center;
+  align-items: center;
 
   margin: var(--spacing-medium) 0;
 }
 
 .Character-List__controls-button {
-  border: none;
-
-  background: transparent;
+  /*Size that is comfortable for mobile clicks*/
+  width: 40px;
+  height: 40px;
 
   font-weight: bold;
+}
+
+.Character-List__controls-button:focus,
+.Character-List__controls-button:hover {
+  background-color: var(--secondary-color);
+  border-radius: 50%;
 }
 
 .Character-List__controls-info {
