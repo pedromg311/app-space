@@ -2,9 +2,10 @@ import Character from "../model/Character";
 import { APICharacterData, APIResponse } from "../types/Character.d";
 import { ListState, ReducerActions } from "../types/CharacterList.d";
 
+const numberOfResultsPerPage = 12;
+
 const shouldEnableNextArrow = (
   numberOfResults: number,
-  numberOfResultsPerPage: number,
   currentOffset: number
 ): boolean => {
   const numberOfStillAvailableItems =
@@ -16,59 +17,43 @@ const shouldEnableNextArrow = (
 };
 
 const nextClickAction = (state: ListState) => {
-  const currentOffset = state.currentOffset + state.numberOfResultsPerPage;
-  const currentPage = state.currentPage + 1;
-
-  //FIXME: do i need this here?
-  const shouldShowNextButton = shouldEnableNextArrow(
-    state.numberOfResults,
-    state.numberOfResultsPerPage,
-    currentOffset
-  );
-  const shouldShowPrevButton = currentPage > 1;
+  const currentOffset = state.currentOffset + numberOfResultsPerPage;
 
   return {
     ...state,
-    currentPage,
     currentOffset,
-    shouldShowNextButton,
-    shouldShowPrevButton,
   };
 };
 
 const prevClickAction = (state: ListState) => {
-  const newState = { ...state };
+  let currentOffset = state.currentOffset - numberOfResultsPerPage;
 
-  if (state.currentPage > 1) {
-    const shouldShowPrevButton = newState.currentPage !== 1;
-
-    newState.currentPage = state.currentPage - 1;
-    //FIXME: do i need this here?
-    newState.shouldShowPrevButton = shouldShowPrevButton;
-    newState.shouldShowNextButton = true;
+  if (currentOffset < 0) {
+    currentOffset = 0;
   }
-  return newState;
+
+  return {
+    ...state,
+    currentOffset,
+  };
 };
 
 const setCharactersList = (
   state: ListState,
-  action: { responseContent: APIResponse }
+  payload: { responseContent: APIResponse }
 ) => {
-  const charactersList = action.responseContent.data.results.map(
+  const charactersList = payload.responseContent.data.results.map(
     (characterData: APICharacterData) => new Character(characterData)
   );
 
   const { total: numberOfResults, offset: currentOffset } =
-    action.responseContent.data;
+    payload.responseContent.data;
 
   const currentPage =
-    Math.ceil(
-      action.responseContent.data.offset / state.numberOfResultsPerPage
-    ) + 1;
+    Math.ceil(payload.responseContent.data.offset / numberOfResultsPerPage) + 1;
 
   const shouldShowNextButton = shouldEnableNextArrow(
     numberOfResults,
-    state.numberOfResultsPerPage,
     currentOffset
   );
   const shouldShowPrevButton = currentPage > 1;
@@ -78,10 +63,21 @@ const setCharactersList = (
     charactersList,
     currentPage,
     numberOfResults,
-    currentOffset,
     shouldShowPrevButton,
     shouldShowNextButton,
   };
+};
+
+const setListSort = (
+  state: ListState,
+  payload: { sortBy: Record<string, string> }
+) => {
+  const currentSearchParams = {
+    ...state.currentSearchParams,
+    ...payload.sortBy,
+  };
+
+  return { ...state, currentSearchParams };
 };
 
 export const buttonAndPageReducer = (
@@ -95,5 +91,7 @@ export const buttonAndPageReducer = (
     return prevClickAction(state);
   case "SET_CHARACTER_LIST":
     return setCharactersList(state, action.payload);
+  case "SET_SORT":
+    return setListSort(state, action.payload);
   }
 };

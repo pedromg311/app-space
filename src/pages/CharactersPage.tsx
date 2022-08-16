@@ -9,44 +9,33 @@ import React, {
 import CharacterList from "../components/CharacterList";
 import Filters from "../components/Filters";
 import SortBy from "../components/SortBy";
-import useHttp from "../hooks/use-http";
 import { Api } from "../store/api-data";
 import { Characters } from "../store/character-data";
-import { APIResponse } from "../types/Character.d";
 
 import { CSSTransition } from "react-transition-group";
 
 import classes from "../styles/pages/CharactersPage.module.css";
 
 const CharactersPage = () => {
-  const { apiKey } = useContext(Api);
-  const { state, setCharactersList, prevButtonClick, nextButtonClick } =
-    useContext(Characters);
-  const { isLoading, error, sendRequest } = useHttp();
+  const { getDefaultURL } = useContext(Api);
+  const {
+    state,
+    prevButtonClick,
+    nextButtonClick,
+    sortButtonClick,
+    error,
+    isLoading,
+  } = useContext(Characters);
   const [shouldShowFilters, setShouldShowFilters] = useState(false);
+
   const nodeRef = useRef<HTMLDivElement>(null); //Used by CSSTransitions
 
-  const transformData = useCallback(
-    (responseContent: APIResponse) => {
-      setCharactersList(responseContent);
-    },
-    [setCharactersList]
+  const backButtonClickHandler = () => prevButtonClick();
+  const nextButtonClickHandler = () => nextButtonClick();
+  const handleSortSubmit = useCallback(
+    (sortBy: Record<string, string>) => sortButtonClick(sortBy),
+    []
   );
-
-  const backButtonClickHandler = () => {
-    sendRequest({ url: "DUMMY_DATA.json" }, transformData);
-
-    //prevButtonClick();
-  };
-
-  const nextButtonClickHandler = () => {
-    const nextOffset = state.numberOfResultsPerPage + state.currentOffset;
-    const urlArgs = `?offset=${nextOffset}&apikey=${apiKey}`;
-
-    sendRequest({ url: "DUMMY_DATA_PAGE_2.json" }, transformData);
-
-    //nextButtonClick();
-  };
 
   const handleFiltersSubmit = (filters: string) => {
     console.log(filters);
@@ -55,12 +44,6 @@ const CharactersPage = () => {
     //sendRequest({ url: "DUMMY_DATA_PAGE_2.json" }, transformData);
   };
 
-  const handleSortSubmit = useCallback((sortBy: string) => {
-    console.log("oh no", sortBy);
-
-    //sendRequest({ url: "DUMMY_DATA_PAGE_2.json" }, transformData);
-  }, []);
-
   const handleOnClickToggle = () => {
     setShouldShowFilters((state) => !state);
   };
@@ -68,10 +51,6 @@ const CharactersPage = () => {
   const handleOnClickCancel = () => {
     setShouldShowFilters(false);
   };
-
-  useEffect(() => {
-    sendRequest({ url: "DUMMY_DATA.json" }, transformData);
-  }, [sendRequest, transformData]);
 
   return (
     <Fragment>

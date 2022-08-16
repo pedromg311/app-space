@@ -29,11 +29,11 @@ const sortingOptions: SortOptions = {
  * Since the webapp uses pagination, sorting on individual
  * pages is not very user friendly, so i just keep the API options
  */
-const SortBy: React.FC<{ sortClickHandler: (sortBy: string) => void }> = (
-  props
-) => {
+const SortBy: React.FC<{
+  sortClickHandler: (sortBy: Record<string, string>) => void;
+}> = (props) => {
   const { sortClickHandler } = props;
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [sortOptions, setSortOptions] = useState(sortingOptions);
   const currentOrderBy = searchParams.get("orderBy");
 
@@ -46,15 +46,11 @@ const SortBy: React.FC<{ sortClickHandler: (sortBy: string) => void }> = (
       currentIndex = 0;
     }
 
-    if (!currentOrderBy) {
-      setSearchParams({ orderBy: sortingOptions.options[0].encodedName });
-    }
-
     setSortOptions((state) => ({
       ...state,
       currentlyActiveIndex: currentIndex,
     }));
-  }, [sortOptions.options, searchParams, setSearchParams, currentOrderBy]);
+  }, [sortOptions.options, searchParams, currentOrderBy]);
 
   const handleButtonClick = (index: number) => {
     const { encodedName } = sortOptions.options[index];
@@ -64,11 +60,9 @@ const SortBy: React.FC<{ sortClickHandler: (sortBy: string) => void }> = (
       ? `${currentOrderBy?.includes("-") ? "" : "-"}${encodedName}`
       : encodedName;
 
-    setSearchParams({ orderBy }); //Enables link sharing
-    sortClickHandler(`orderBy=${orderBy}`);
+    sortClickHandler({ orderBy });
   };
 
-  console.log(sortOptions.currentlyActiveIndex);
   return (
     <div className={classes["SortBy"]}>
       <p className={classes["SortBy__title"]}>Sort by:</p>

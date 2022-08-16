@@ -11,7 +11,7 @@ const initialState: ListState = {
   currentPage: 1,
   numberOfResults: 0,
   currentOffset: 0,
-  numberOfResultsPerPage: 11,
+  currentSearchParams: { orderBy: "nameStartsWith" },
   charactersList: null,
 };
 

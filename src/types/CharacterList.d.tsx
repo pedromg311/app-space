@@ -5,10 +5,10 @@ export type ListState = {
   shouldShowPrevButton: boolean;
   shouldShowNextButton: boolean;
   currentPage: number;
-  numberOfResults: number;
   currentOffset: number;
-  numberOfResultsPerPage: number;
+  currentSearchParams: Record<string, string>;
   charactersList: Character[] | null;
+  numberOfResults: number;
 };
 
 export type ReducerActions =
@@ -17,4 +17,5 @@ export type ReducerActions =
   | {
       type: "SET_CHARACTER_LIST";
       payload: { responseContent: APIResponse };
-    };
+    }
+  | { type: "SET_SORT"; payload: { sortBy: Record<string, string> } };
