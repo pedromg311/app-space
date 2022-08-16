@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import CharacterList from "../components/CharacterList";
@@ -13,6 +14,8 @@ import { Api } from "../store/api-data";
 import { Characters } from "../store/character-data";
 import { APIResponse } from "../types/Character.d";
 
+import { CSSTransition } from "react-transition-group";
+
 import classes from "../styles/pages/ChangePages.module.css";
 
 const CharactersPage = () => {
@@ -21,6 +24,7 @@ const CharactersPage = () => {
     useContext(Characters);
   const { isLoading, error, sendRequest } = useHttp();
   const [shouldShowFilters, setShouldShowFilters] = useState(false);
+  const nodeRef = useRef<HTMLDivElement>(null); //Used by CSSTransitions
 
   const transformData = useCallback(
     (responseContent: APIResponse) => {
@@ -83,20 +87,31 @@ const CharactersPage = () => {
       <main className={classes["App-main"]}>
         {!error && (
           <Fragment>
-            {shouldShowFilters && (
-              <Filters
-                onFiltersSubmit={handleFiltersSubmit}
-                onCancel={handleOnClickCancel}
-              />
-            )}
-            <div className={classes["App-main__filter"]}>
-              <button
-                className={`${classes["App-main__filter-button"]} App__button--primary`}
-                onClick={handleOnClickToggle.bind(null, shouldShowFilters)}
+            <CSSTransition
+              in={shouldShowFilters}
+              timeout={5000}
+              classNames="App-main__filter-container"
+              nodeRef={nodeRef}
+            >
+              <div
+                className={classes["App-main__filter-container"]}
+                ref={nodeRef}
               >
-                Filter
-              </button>
-            </div>
+                <Filters
+                  onFiltersSubmit={handleFiltersSubmit}
+                  onCancel={handleOnClickCancel}
+                />
+                <div className={classes["App-main__filter"]}>
+                  <button
+                    className={`${classes["App-main__filter-button"]} App__button--primary`}
+                    onClick={handleOnClickToggle.bind(null, shouldShowFilters)}
+                  >
+                    Filter
+                  </button>
+                </div>
+              </div>
+            </CSSTransition>
+
             <div className={classes["App-main__list-heading"]}>
               <SortBy sortClickHandler={handleSortSubmit} />
               <p className={classes["App-main__list-results"]}>

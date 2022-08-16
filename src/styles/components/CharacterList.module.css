@@ -41,7 +41,7 @@
 }
 
 .Character-List__item-name {
-  color: var(--font-color);
+  color: var(--highlight-color);
 
   font-size: 1.05rem;
   font-weight: bold;

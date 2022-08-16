@@ -2,12 +2,15 @@
   --main-color: #f4b16c;
   --secondary-color: #ffc0ba;
   --tertiary-color: #ff8885;
-  --font-color: #c35353;
+  --highlight-color: #c35353;
 
   --spacing-extra-large: 48px;
   --spacing-large: 24px;
   --spacing-medium: 16px;
   --spacing-small: 8px;
+
+  --z-index-header: 2;
+  --z-index-modal: 1;
 }
 
 html,
@@ -28,4 +31,28 @@ body {
 
   background-color: var(--secondary-color);
   font-weight: bold;
+}
+
+/**** ANIMATIONS ****/
+
+.App-main__filter-container-enter {
+  transform: translateY(0);
+}
+
+.App-main__filter-container-enter-active {
+  transform: translateY(79%);
+  transition: transform 2000ms ease-in-out;
+}
+
+.App-main__filter-container-enter-done {
+  transform: translateY(79%);
+}
+
+.App-main__filter-container-exit {
+  transform: translateY(79%);
+}
+.App-main__filter-container-exit-active {
+  transform: translateY(0);
+
+  transition: transform 2000ms ease-in-out;
 }
