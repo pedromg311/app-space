@@ -4,6 +4,7 @@
   --tertiary-color: #ff8885;
   --font-color: #c35353;
 
+  --spacing-extra-large: 48px;
   --spacing-large: 24px;
   --spacing-medium: 16px;
   --spacing-small: 8px;
@@ -17,4 +18,14 @@ body {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.App__button--primary {
+  padding: var(--spacing-small);
+
+  border: 1px solid var(--tertiary-color);
+  border-radius: 5%;
+
+  background-color: var(--secondary-color);
+  font-weight: bold;
 }

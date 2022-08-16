@@ -6,14 +6,16 @@ import Filter from "../Filters";
 const filterSubmitHandler = jest.fn();
 
 const setup = () => {
-  const utils = render(<Filter onFiltersSubmit={filterSubmitHandler} />);
-  const nameInput = utils.getByLabelText("Name starts with");
-  const comicsInput = utils.getByLabelText("Comics");
-  const seriesInput = utils.getByLabelText("Series");
-  const storiesInput = utils.getByLabelText("Stories");
-  const eventsInput = utils.getByLabelText("Events");
+  const utils = render(
+    <Filter onFiltersSubmit={filterSubmitHandler} onCancel={() => {}} />
+  );
+  const nameInput = utils.getByLabelText("Name starts with", { exact: false });
+  const comicsInput = utils.getByLabelText("Comics", { exact: false });
+  const seriesInput = utils.getByLabelText("Series", { exact: false });
+  const storiesInput = utils.getByLabelText("Stories", { exact: false });
+  const eventsInput = utils.getByLabelText("Events", { exact: false });
 
-  const formButton = utils.getByRole("button");
+  const formButton = utils.getByRole("button", { name: "Filter" });
 
   return {
     nameInput,

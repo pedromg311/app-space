@@ -1,0 +1,44 @@
+.Filter {
+  padding: var(--spacing-small);
+
+  border-left: 2px solid var(--tertiary-color);
+  border-right: 2px solid var(--tertiary-color);
+
+  background-color: rgba(255, 192, 186, 0.5);
+}
+
+.Filter__hint {
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: end;
+}
+
+.Filter__item {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: var(--spacing-small);
+}
+
+.Filter__controls {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-top: var(--spacing-medium);
+}
+
+.Filter__controls-button {
+  margin-right: var(--spacing-small);
+  padding: var(--spacing-small);
+
+  border: 1px solid var(--tertiary-color);
+  border-radius: 5%;
+}
+
+.Filter__controls-button:first-child {
+  margin-right: var(--spacing-small);
+}
+
+.Filter__controls-button:last-child {
+  margin-right: 0;
+}

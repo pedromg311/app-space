@@ -1,5 +1,5 @@
 .Character-List {
-  margin: var(--spacing-large) 0 var(--spacing-medium) 0;
+  margin: var(--spacing-small) 0 var(--spacing-medium) 0;
 
   /*Helps with CLS*/
   min-height: 300px;

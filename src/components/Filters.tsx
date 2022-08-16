@@ -2,9 +2,12 @@ import React from "react";
 import useInput from "../hooks/use-input";
 import { formatValue, isValidIdsList } from "../utils/_filters.utils";
 
-const Inputs: React.FC<{ onFiltersSubmit: (filters: string) => void }> = (
-  props
-) => {
+import classes from "../styles/components/Filter.module.css";
+
+const Inputs: React.FC<{
+  onFiltersSubmit: (filters: string) => void;
+  onCancel: () => void;
+}> = (props) => {
   const {
     value: enteredName,
     reset: resetNameInput,
@@ -49,10 +52,6 @@ const Inputs: React.FC<{ onFiltersSubmit: (filters: string) => void }> = (
         filters.push(`events=${formatValue(eventsInputValues.value)}`);
       }
 
-      if (filters.length === 0) {
-        return;
-      }
-
       props.onFiltersSubmit(filters.join("&"));
 
       resetNameInput();
@@ -64,37 +63,52 @@ const Inputs: React.FC<{ onFiltersSubmit: (filters: string) => void }> = (
   };
 
   return (
-    <form onSubmit={submitHandler}>
-      <div>
-        <label htmlFor="name">Name starts with</label>
-        <input
-          type="text"
-          id="name"
-          value={enteredName}
-          onChange={nameChangeHandler}
-        />
-      </div>
-      {listInputs.map((list, index) => {
-        return (
-          <div key={`listFilter${index}`}>
-            <label htmlFor={list.title}>{list.title}</label>
-            <input
-              type="text"
-              id={list.title}
-              value={list.value}
-              onChange={list.valueChangeHandler}
-              onBlur={list.inputBlurHandler}
-              placeholder="id, id, ..."
-            />
-            {list.hasError && <p> Please enter a list of ids </p>}
-          </div>
-        );
-      })}
+    <div className={classes["Filter"]}>
+      <p className={classes["Filter__hint"]}>Leave empty to reset list</p>
+      <form onSubmit={submitHandler}>
+        <div className={classes["Filter__item"]}>
+          <label className={classes["Filter__item-label"]} htmlFor="name">
+            Name starts with:
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={enteredName}
+            onChange={nameChangeHandler}
+          />
+        </div>
+        {listInputs.map((list, index) => {
+          return (
+            <div className={classes["Filter__item"]} key={`listFilter${index}`}>
+              <label
+                className={classes["Filter__item-label"]}
+                htmlFor={list.title}
+              >
+                {list.title}:
+              </label>
+              <input
+                type="text"
+                id={list.title}
+                value={list.value}
+                onChange={list.valueChangeHandler}
+                onBlur={list.inputBlurHandler}
+                placeholder="id, id, ..."
+              />
+              {list.hasError && <p> Please enter a list of ids </p>}
+            </div>
+          );
+        })}
 
-      <div>
-        <button type="submit">Submit</button>
-      </div>
-    </form>
+        <div className={classes["Filter__controls"]}>
+          <button
+            className={`${classes["Filter__controls-button"]} App__button--primary`}
+            type="submit"
+          >
+            Filter
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 
