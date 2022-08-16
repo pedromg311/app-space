@@ -11,6 +11,8 @@
 
   --z-index-header: 2;
   --z-index-modal: 1;
+
+  --filter-animation-offset: 77%;
 }
 
 html,
@@ -29,7 +31,6 @@ body {
   border: 1px solid var(--tertiary-color);
   border-radius: 5%;
 
-  background-color: var(--secondary-color);
   font-weight: bold;
 }
 
@@ -40,19 +41,39 @@ body {
 }
 
 .App-main__filter-container-enter-active {
-  transform: translateY(79%);
-  transition: transform 2000ms ease-in-out;
+  transform: translateY(var(--filter-animation-offset));
+  transition: transform 1000ms ease-in-out;
 }
 
 .App-main__filter-container-enter-done {
-  transform: translateY(79%);
+  transform: translateY(var(--filter-animation-offset));
 }
 
 .App-main__filter-container-exit {
-  transform: translateY(79%);
+  transform: translateY(var(--filter-animation-offset));
 }
 .App-main__filter-container-exit-active {
   transform: translateY(0);
 
-  transition: transform 2000ms ease-in-out;
+  transition: transform 1000ms ease-in-out;
+}
+
+@media only screen and (min-width: 990px) {
+  .App-main__filter-container {
+    top: -255px;
+    width: 50%;
+  }
+
+  .App-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .App-main__filter-container-exit,
+  .App-main__filter-container-enter-active,
+  .App-main__filter-container-enter-done {
+    --filter-animation-offset: 69%;
+  }
 }

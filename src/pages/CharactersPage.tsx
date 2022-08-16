@@ -89,7 +89,7 @@ const CharactersPage = () => {
           <Fragment>
             <CSSTransition
               in={shouldShowFilters}
-              timeout={5000}
+              timeout={1000}
               classNames="App-main__filter-container"
               nodeRef={nodeRef}
             >
@@ -106,7 +106,7 @@ const CharactersPage = () => {
                     className={`${classes["App-main__filter-button"]} App__button--primary`}
                     onClick={handleOnClickToggle.bind(null, shouldShowFilters)}
                   >
-                    Filter
+                    {shouldShowFilters ? "Close" : "Open Filters"}
                   </button>
                 </div>
               </div>

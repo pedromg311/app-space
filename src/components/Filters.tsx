@@ -65,7 +65,7 @@ const Inputs: React.FC<{
   return (
     <div className={classes["Filter"]}>
       <p className={classes["Filter__hint"]}>Leave empty to reset list</p>
-      <form onSubmit={submitHandler}>
+      <form className={classes["Filter__form"]} onSubmit={submitHandler}>
         <div className={classes["Filter__item"]}>
           <label className={classes["Filter__item-label"]} htmlFor="name">
             Name starts with:
@@ -101,7 +101,7 @@ const Inputs: React.FC<{
 
         <div className={classes["Filter__controls"]}>
           <button
-            className={`${classes["Filter__controls-button"]} App__button--primary`}
+            className={`App__button--primary ${classes["Filter__controls-button"]}`}
             type="submit"
           >
             Filter

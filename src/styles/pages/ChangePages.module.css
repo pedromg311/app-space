@@ -34,7 +34,7 @@
 
 .App-main__filter-container {
   position: absolute;
-  top: -400px;
+  top: -410px;
 
   width: 100%;
 
@@ -65,6 +65,7 @@
 
   transform: translateY(50%);
 
+  background-color: var(--secondary-color);
   box-shadow: 0 0 2px 2px var(--highlight-color);
 }
 
@@ -73,6 +74,8 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: baseline;
+
+  width: 100%;
 
   margin-top: var(--spacing-large);
 }
@@ -102,4 +105,18 @@
   height: 50vh;
 
   text-align: center;
+}
+
+@media only screen and (min-width: 990px) {
+  .App-main__filter-container {
+    top: -255px;
+    width: 50%;
+  }
+
+  .App-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 }
