@@ -10,7 +10,7 @@ const CharacterListMock = mockedData.map(
   (characterData) => new Character({ ...characterData })
 );
 
-const renderList = (numberOfResults = 500, currentPage = 1) => {
+const renderList = (currentPage = 1) => {
   render(
     <BrowserRouter>
       <CharacterList

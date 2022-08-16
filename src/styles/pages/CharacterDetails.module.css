@@ -23,10 +23,16 @@
 }
 
 .Character-details__description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
   margin-top: var(--spacing-small);
 
   text-align: justify;
   text-justify: distribute;
+
+  border: 3px solid var(--highlight-color);
 }
 
 /**** FOOTER****/
@@ -63,6 +69,8 @@
 
   .Character-details__description {
     margin-top: 0;
+
+    background-color: var(--secondary-color);
   }
 
   .Character-details__content-grid {

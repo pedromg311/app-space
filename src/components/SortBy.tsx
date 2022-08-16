@@ -33,7 +33,7 @@ const SortBy: React.FC<{ sortClickHandler: (sortBy: string) => void }> = (
   props
 ) => {
   const { sortClickHandler } = props;
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [sortOptions, setSortOptions] = useState(sortingOptions);
   const currentOrderBy = searchParams.get("orderBy");
 
