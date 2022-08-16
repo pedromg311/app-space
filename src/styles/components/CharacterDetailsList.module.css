@@ -1,0 +1,27 @@
+.Character__section {
+  margin: var(--spacing-large) 0;
+  padding: var(--spacing-medium);
+
+  background-color: var(--secondary-color);
+  border: 3px solid var(--highlight-color);
+}
+
+.Character__section-title {
+  margin-top: 0;
+  margin-bottom: var(--spacing-medium);
+}
+
+.Character__list-item {
+  margin-left: var(--spacing-small);
+}
+
+.Character__list-separator {
+  width: 100%;
+
+  color: var(--tertiary-color);
+  opacity: 0.4;
+}
+
+.Character__list-separator:last-child {
+  display: none;
+}

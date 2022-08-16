@@ -1,0 +1,24 @@
+.App-header {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  height: 5rem;
+  padding: 0 1rem;
+
+  background-color: var(--secondary-color);
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  z-index: var(--z-index-header);
+}
+
+.App-header__heading {
+  font-family: "Orkney", sans-serif;
+}
+
+.App-header__logo {
+  height: 50%;
+  margin-right: 12px;
+}

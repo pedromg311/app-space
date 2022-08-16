@@ -1,9 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useHttp from "../hooks/use-http";
 import Character from "../model/Character";
 import { Characters } from "../store/character-data";
 import { APIResponse } from "../types/Character.d";
+
+import classes from "../styles/pages/CharacterDetails.module.css";
+import CharacterDetailsList from "../components/CharacterDetailsList";
 
 /**
  * Technically this component could be way linear
@@ -52,45 +55,70 @@ const CharacterDetails = () => {
 
   if (currentCharacter) {
     return (
-      <section>
-        <h2>{currentCharacter?.name}</h2>
-        <img
-          alt=""
-          src={`${currentCharacter?.thumbnail.path}.${currentCharacter?.thumbnail.extension}`}
-        />
-        <p>{currentCharacter?.description}</p>
+      <Fragment>
+        <main className={classes["Character-details__main"]}>
+          <h1 className={classes["Character-details__title"]}>
+            {currentCharacter.name}
+          </h1>
+          <img
+            className={classes["Character-details__image"]}
+            alt={`An image of ${currentCharacter.name}`}
+            src={`${currentCharacter.thumbnail.path}.${currentCharacter?.thumbnail.extension}`}
+          />
+          {currentCharacter.description && (
+            <p className={classes["Character-details__description"]}>
+              {currentCharacter.description}
+            </p>
+          )}
 
-        <h3>Comics</h3>
-        <p>
-          {currentCharacter?.comics.items.map((comic) => (
-            <li key={comic}>{comic}</li>
-          ))}
-        </p>
-        <h3>Events</h3>
-        <p>
-          {currentCharacter?.events.items.map((event) => (
-            <li key={event}>{event}</li>
-          ))}
-        </p>
-        <h3>Series</h3>
-        <p>
-          {currentCharacter?.series.items.map((series) => (
-            <li key={series}>{series}</li>
-          ))}
-        </p>
-        <h3>Stories</h3>
-        <p>
-          {currentCharacter?.stories.items.map((story) => (
-            <li key={story}>{story}</li>
-          ))}
-        </p>
-        <h3>URLS</h3>
-        <p>
-          {currentCharacter?.urls.map((url, index) => (
-            <li key={url.url + index}>{url.url}</li>
-          ))}
-        </p>
-      </section>
+          {currentCharacter.comics.items.length > 0 && (
+            <CharacterDetailsList
+              characterList={currentCharacter.comics}
+              title="Comics"
+            />
+          )}
+          {currentCharacter.events.items.length > 0 && (
+            <CharacterDetailsList
+              characterList={currentCharacter.events}
+              title="Events"
+            />
+          )}
+          {currentCharacter.series.items.length > 0 && (
+            <CharacterDetailsList
+              characterList={currentCharacter.series}
+              title="Series"
+            />
+          )}
+          {currentCharacter.stories.items.length > 0 && (
+            <CharacterDetailsList
+              characterList={currentCharacter.stories}
+              title="Stories"
+            />
+          )}
+        </main>
+        {currentCharacter.urls.length > 0 && (
+          <footer className={classes["Character-details__footer"]}>
+            <h3>Links</h3>
+            <ul className={classes["Character-details__urls"]}>
+              {currentCharacter.urls.map((url, index) => (
+                <li
+                  className={classes["Character-details__url"]}
+                  key={url.url + index}
+                >
+                  <a
+                    className={classes["Character-details__url-link"]}
+                    href={url.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {url.type}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </footer>
+        )}
+      </Fragment>
     );
   }
 
