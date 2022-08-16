@@ -92,5 +92,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    margin-left: var(--spacing-desktop-margin);
+    margin-right: var(--spacing-desktop-margin);
   }
 }

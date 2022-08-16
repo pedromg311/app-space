@@ -17,7 +17,7 @@ function App() {
         <img
           className={classes["App-header__logo"]}
           alt=""
-          src="./Marvel_Banner.jpg"
+          src="/Marvel_Banner.jpg"
         />
         <h1 className={classes["App-header__heading"]}>Marvel Finder</h1>
       </header>

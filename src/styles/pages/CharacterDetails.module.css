@@ -14,6 +14,12 @@
 
 .Character-details__image {
   width: 100%;
+  height: 100%;
+
+  border: 3px solid var(--highlight-color);
+  box-sizing: border-box;
+
+  object-fit: cover;
 }
 
 .Character-details__description {
@@ -46,7 +52,23 @@
 /**** DESKTOP ****/
 
 @media only screen and (min-width: 990px) {
+  .Character-details__footer,
+  .Character-details__main {
+    margin: var(--spacing-desktop-margin);
+  }
+
   .Character-details__title {
     font-size: 3rem;
+  }
+
+  .Character-details__description {
+    margin-top: 0;
+  }
+
+  .Character-details__content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: minmax(400px, 45vh);
+    gap: var(--spacing-large);
   }
 }

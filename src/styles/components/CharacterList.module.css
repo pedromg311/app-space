@@ -29,6 +29,8 @@
   height: 5rem;
 
   margin-right: var(--spacing-small);
+
+  object-fit: cover;
 }
 
 /**** Text ****/

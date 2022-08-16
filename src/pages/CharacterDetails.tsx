@@ -60,41 +60,45 @@ const CharacterDetails = () => {
           <h1 className={classes["Character-details__title"]}>
             {currentCharacter.name}
           </h1>
-          <img
-            className={classes["Character-details__image"]}
-            alt={`An image of ${currentCharacter.name}`}
-            src={`${currentCharacter.thumbnail.path}.${currentCharacter?.thumbnail.extension}`}
-          />
-          {currentCharacter.description && (
-            <p className={classes["Character-details__description"]}>
-              {currentCharacter.description}
-            </p>
-          )}
+          <div className={classes["Character-details__content-grid"]}>
+            <img
+              className={classes["Character-details__image"]}
+              alt={`An image of ${currentCharacter.name}`}
+              src={`${currentCharacter.thumbnail.path}.${currentCharacter?.thumbnail.extension}`}
+            />
 
-          {currentCharacter.comics.items.length > 0 && (
-            <CharacterDetailsList
-              characterList={currentCharacter.comics}
-              title="Comics"
-            />
-          )}
-          {currentCharacter.events.items.length > 0 && (
-            <CharacterDetailsList
-              characterList={currentCharacter.events}
-              title="Events"
-            />
-          )}
-          {currentCharacter.series.items.length > 0 && (
-            <CharacterDetailsList
-              characterList={currentCharacter.series}
-              title="Series"
-            />
-          )}
-          {currentCharacter.stories.items.length > 0 && (
-            <CharacterDetailsList
-              characterList={currentCharacter.stories}
-              title="Stories"
-            />
-          )}
+            {/*Sometimes an invisible character is return */}
+            {currentCharacter.description.length > 1 && (
+              <p className={classes["Character-details__description"]}>
+                {currentCharacter.description}
+              </p>
+            )}
+
+            {currentCharacter.comics.items.length > 0 && (
+              <CharacterDetailsList
+                characterList={currentCharacter.comics}
+                title="Comics"
+              />
+            )}
+            {currentCharacter.events.items.length > 0 && (
+              <CharacterDetailsList
+                characterList={currentCharacter.events}
+                title="Events"
+              />
+            )}
+            {currentCharacter.series.items.length > 0 && (
+              <CharacterDetailsList
+                characterList={currentCharacter.series}
+                title="Series"
+              />
+            )}
+            {currentCharacter.stories.items.length > 0 && (
+              <CharacterDetailsList
+                characterList={currentCharacter.stories}
+                title="Stories"
+              />
+            )}
+          </div>
         </main>
         {currentCharacter.urls.length > 0 && (
           <footer className={classes["Character-details__footer"]}>
