@@ -20,6 +20,8 @@
 
 .SortBy__options-button {
   padding-right: 0;
+
+  color: var(--black-color);
 }
 
 .SortBy__options-button--direction {

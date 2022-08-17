@@ -61,10 +61,12 @@
 
 .Character-List__controls-button {
   /*Size that is comfortable for mobile clicks*/
-  width: 40px;
-  height: 40px;
+  width: var(--button-a11y-click-space);
+  height: var(--button-a11y-click-space);
 
   font-weight: bold;
+
+  color: var(--black-color);
 }
 
 .Character-List__controls-button:focus,

@@ -3,8 +3,8 @@
   position: absolute;
   left: 0;
 
-  height: 30px;
-  padding: 8px;
+  height: var(--aux-a11y-click-space);
+  padding: var(--spacing-small);
 
   background-color: var(--secondary-color);
 
@@ -40,7 +40,7 @@
   justify-content: center;
 
   position: relative;
-  height: 30px;
+  height: var(--aux-a11y-click-space);
 
   border-right: 2px solid var(--highlight-color);
   border-bottom: 2px solid var(--highlight-color);
@@ -58,6 +58,7 @@
 
   transform: translateY(50%);
 
+  color: var(--black-color);
   background-color: var(--secondary-color);
   box-shadow: 0 0 2px 2px var(--highlight-color);
 }

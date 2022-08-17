@@ -49,3 +49,7 @@ The application is currently hosted on firebase, and can be accessed with the fo
 Since this was my "first real React App" there was a lot of refactoring and learning involved. There's probably a lot of things that i would have done better and will do better in the future when i have more experience with the framework. But with that said the jump from Vue to React wasn't as difficult as i expected, and i was able to "port" a lot of rules and standards from one framework to the other.
 
 The App is also visually more appealing on mobile or smaller screens. There's such not enough information to fill bigger screens;
+
+#### Post
+
+The Marvel login service seems to be having some issues right now. I can still use the API, but accessing my setting has proven difficult. Hopefully there's no impact

@@ -3,6 +3,7 @@
   --secondary-color: #ffc0ba;
   --tertiary-color: #ff8885;
   --highlight-color: #7b2323;
+  --black-color: #000000;
 
   --spacing-desktop-margin: 64px;
   --spacing-extra-large: 48px;
@@ -14,6 +15,9 @@
   --z-index-modal: 1;
 
   --filter-animation-offset: 90%;
+
+  --button-a11y-click-space: 40px;
+  --aux-a11y-click-space: 30px;
 }
 
 html,
