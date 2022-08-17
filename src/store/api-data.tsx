@@ -24,7 +24,7 @@ export const Api = React.createContext<{
 
 export const ApiProvider: React.FC<{ children: React.ReactNode }> = (props) => {
   const getDefaultURL = useCallback(() => {
-    return `${initialState.url}${initialState.defaultSearchParams}&${initialState.apiKey}`;
+    return `${initialState.url}?${initialState.apiKey}`;
   }, []);
   return (
     <Api.Provider

@@ -7,10 +7,11 @@ const numberOfResultsPerPage = 12;
 
 const shouldEnableNextArrow = (
   numberOfResults: number,
-  currentOffset: number
+  currentOffset: number,
+  count: number
 ): boolean => {
-  const numberOfStillAvailableItems =
-    numberOfResults - currentOffset + numberOfResultsPerPage;
+  console.log(numberOfResults, currentOffset, count);
+  const numberOfStillAvailableItems = numberOfResults - (currentOffset + count);
 
   return (
     numberOfResults > numberOfResultsPerPage && numberOfStillAvailableItems > 0
@@ -19,7 +20,7 @@ const shouldEnableNextArrow = (
 
 const nextClickAction = (state: ListState) => {
   const currentOffset = state.currentOffset + numberOfResultsPerPage;
-
+  console.log("store", currentOffset);
   return {
     ...state,
     currentOffset,
@@ -55,15 +56,19 @@ const setCharactersList = (
     (characterData: APICharacterData) => new Character(characterData)
   );
 
-  const { total: numberOfResults, offset: currentOffset } =
-    payload.responseContent.data;
+  const {
+    total: numberOfResults,
+    offset: currentOffset,
+    count,
+  } = payload.responseContent.data;
 
   const currentPage =
     Math.ceil(payload.responseContent.data.offset / numberOfResultsPerPage) + 1;
 
   const shouldShowNextButton = shouldEnableNextArrow(
     numberOfResults,
-    currentOffset
+    currentOffset,
+    count
   );
   const shouldShowPrevButton = currentPage > 1;
 
@@ -82,7 +87,7 @@ const setSearchParams = (
   payload: { newSearchParams: Record<string, string> }
 ) => {
   const { newSearchParams } = payload;
-
+  let currentOffset = state.currentOffset;
   let currentSearchParams: Record<string, string> = {};
 
   if (Object.keys(newSearchParams).length === 0) {
@@ -91,13 +96,15 @@ const setSearchParams = (
     currentSearchParams = { ...state.currentSearchParams, ...newSearchParams };
 
     if (!newSearchParams.offset) {
-      currentSearchParams.offset = state.currentSearchParams.offset;
+      currentSearchParams.offset = initialState.currentSearchParams.offset;
+      currentOffset = +initialState.currentSearchParams.offset;
     }
   }
 
   return {
     ...state,
     currentSearchParams: { ...currentSearchParams },
+    currentOffset,
   };
 };
 

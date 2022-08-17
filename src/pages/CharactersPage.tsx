@@ -17,7 +17,7 @@ import { CSSTransition } from "react-transition-group";
 import classes from "../styles/pages/CharactersPage.module.css";
 import { APIResponse } from "../types/Character.d";
 import useHttp from "../hooks/use-http";
-import { useSearchParams } from "react-router-dom";
+import { createSearchParams, useSearchParams } from "react-router-dom";
 
 const CharactersPage = () => {
   const {
@@ -34,8 +34,14 @@ const CharactersPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const nodeRef = useRef<HTMLDivElement>(null); //Used by CSSTransitions
 
-  const backButtonClickHandler = () => prevButtonClick();
-  const nextButtonClickHandler = () => nextButtonClick();
+  const backButtonClickHandler = () => {
+    setShouldShowFilters(false);
+    prevButtonClick();
+  };
+  const nextButtonClickHandler = () => {
+    setShouldShowFilters(false);
+    nextButtonClick();
+  };
   const handleSortSubmit = useCallback(
     (sortBy: Record<string, string>) => setSearchParamsState(sortBy),
     [setSearchParamsState]
@@ -75,15 +81,15 @@ const CharactersPage = () => {
         currentSearchParams[key] = value;
       });
     } else {
-      setSearchParams({ ...currentSearchParams });
+      setSearchParams(currentSearchParams);
     }
 
     const defaultURL = getDefaultURL();
+    const searchString = createSearchParams(currentSearchParams).toString();
 
-    sendRequest({ url: "DUMMY_DATA.json" }, transformData);
+    //sendRequest({ url: "DUMMY_DATA.json" }, transformData);
 
-    //FIXME: build url with search params
-    //sendRequest({ url: defaultURL + urlArgs }, transformData);
+    sendRequest({ url: `${defaultURL}&${searchString}` }, transformData);
   }, [
     sendRequest,
     transformData,

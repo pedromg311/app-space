@@ -30,9 +30,9 @@ const CharacterDetails = () => {
       if (!state.charactersList) {
         const url = `${baseUrl}/${characterId}?${apiKey}`;
 
-        // sendRequest({ url }, async (responseContent: APIResponse) => {
-        //   setCurrentCharacter(new Character(responseContent.data.results[0]));
-        // });
+        sendRequest({ url }, async (responseContent: APIResponse) => {
+          setCurrentCharacter(new Character(responseContent.data.results[0]));
+        });
       } else {
         const characterDetails = getCharacterById(parseInt(characterId, 10));
 

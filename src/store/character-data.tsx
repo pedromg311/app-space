@@ -1,10 +1,8 @@
 import React, {
   MutableRefObject,
   useCallback,
-  useEffect,
   useReducer,
   useRef,
-  useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
 import Character from "../model/Character";
@@ -16,7 +14,7 @@ export const initialState: ListState = {
   shouldShowPrevButton: false,
   shouldShowNextButton: true,
   currentPage: 1,
-  currentSearchParams: { orderBy: "name", offset: "0" },
+  currentSearchParams: { orderBy: "name", offset: "0", limit: "12" },
   numberOfResults: 0,
   currentOffset: 0,
   charactersList: null,
@@ -45,7 +43,6 @@ export const CharactersProvider: React.FC<{ children: React.ReactNode }> = (
 ) => {
   const [state, dispatch] = useReducer(buttonAndPageReducer, initialState);
   const isFirstRun = useRef(true);
-  const [searchParams] = useSearchParams();
 
   const setCharactersList = useCallback((responseContent: APIResponse) => {
     dispatch({
@@ -53,23 +50,22 @@ export const CharactersProvider: React.FC<{ children: React.ReactNode }> = (
       payload: { responseContent },
     });
   }, []);
-  const prevButtonClick = () => dispatch({ type: "PREV_CLICK" });
-  const nextButtonClick = () => dispatch({ type: "NEXT_CLICK" });
+  const prevButtonClick = () => {
+    dispatch({ type: "PREV_CLICK" });
+    isFirstRun.current = false;
+  };
+  const nextButtonClick = () => {
+    dispatch({ type: "NEXT_CLICK" });
+    isFirstRun.current = false;
+  };
   const setSearchParamsState = (newSearchParams: Record<string, string>) => {
-    let currentSearchParams: Record<string, string> = {};
-
-    if (Object.keys(newSearchParams).length > 0) {
-      searchParams.forEach((value, key) => {
-        currentSearchParams[key] = value;
-      });
-    }
-
     dispatch({
       type: "SET_SEARCH_PARAMS",
       payload: {
-        newSearchParams: { ...currentSearchParams, ...newSearchParams },
+        newSearchParams,
       },
     });
+
     isFirstRun.current = false;
   };
 

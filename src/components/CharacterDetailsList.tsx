@@ -12,9 +12,9 @@ const CharacterDetailsList: React.FC<{
     <section className={classes["Character__section"]}>
       <h3 className={classes["Character__section-title"]}>{props.title}</h3>
       <ul>
-        {props.characterList.items.map((comic) => (
-          <Fragment key={comic}>
-            <li className={classes["Character__list-item"]}>{comic}</li>
+        {props.characterList.items.map((listItem, index) => (
+          <Fragment key={listItem + index}>
+            <li className={classes["Character__list-item"]}>{listItem}</li>
             <hr className={classes["Character__list-separator"]} />
           </Fragment>
         ))}

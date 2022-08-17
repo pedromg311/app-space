@@ -37,7 +37,7 @@ const Inputs: React.FC<{
       const filters: Record<string, string> = {};
 
       if (enteredName) {
-        filters.name = formatValue(enteredName);
+        filters.nameStartsWith = formatValue(enteredName);
       }
       if (comicsInputValues.value) {
         filters.comics = formatValue(comicsInputValues.value);

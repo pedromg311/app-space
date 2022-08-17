@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { SortOptions } from "../types/SortBy.d";
 
 import classes from "../styles/components/SortBy.module.css";
+import { Characters } from "../store/character-data";
 
 const sortingOptions: SortOptions = [
   {
@@ -29,9 +30,9 @@ const SortBy: React.FC<{
 }> = (props) => {
   const { sortClickHandler } = props;
   const [searchParams] = useSearchParams();
-  const [currentlyActiveIndex, setCurrentlyActiveIndex] = useState(-1);
+  const [currentlyActiveIndex, setCurrentlyActiveIndex] = useState(0);
   const currentOrderBy = searchParams.get("orderBy");
-  let location = useLocation();
+  const { state } = useContext(Characters);
 
   useEffect(() => {
     let currentIndex = sortingOptions.findIndex((option) =>
@@ -43,16 +44,24 @@ const SortBy: React.FC<{
     }
 
     setCurrentlyActiveIndex(currentIndex);
-  }, [currentOrderBy, location]);
+  }, [currentOrderBy]);
 
   const handleButtonClick = (index: number) => {
     const { encodedName } = sortingOptions[index];
-    const isSameSorting = currentOrderBy?.includes(encodedName);
+    let currentSearchParams = "";
+
+    if (!currentOrderBy) {
+      currentSearchParams = state.currentSearchParams.orderBy;
+    } else {
+      currentSearchParams = currentOrderBy;
+    }
+    const isSameSorting = currentSearchParams.includes(encodedName);
 
     const orderBy = isSameSorting
-      ? `${currentOrderBy?.includes("-") ? "" : "-"}${encodedName}`
+      ? `${currentSearchParams?.includes("-") ? "" : "-"}${encodedName}`
       : encodedName;
 
+    setCurrentlyActiveIndex(index);
     sortClickHandler({ orderBy });
   };
 

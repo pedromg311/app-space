@@ -85,7 +85,7 @@ describe("[Component] Character List", () => {
     act(() => formButton.click());
 
     expect(filterSubmitHandler).toHaveBeenCalledWith({
-      name: "Spider-man",
+      nameStartsWith: "Spider-man",
     });
   });
 
@@ -100,7 +100,7 @@ describe("[Component] Character List", () => {
 
     expect(filterSubmitHandler).toHaveBeenCalledWith({
       events: "15%2C51",
-      name: "Iron%20Man",
+      nameStartsWith: "Iron%20Man",
       stories: "20",
     });
   });
