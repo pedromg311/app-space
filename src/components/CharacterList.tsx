@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Character from "../model/Character";
 
 import classes from "../styles/components/CharacterList.module.css";
@@ -12,6 +12,8 @@ const CharacterList: React.FC<{
   shouldShowPrevButton: boolean;
   shouldShowNextButton: boolean;
 }> = (props) => {
+  const location = useLocation();
+
   return (
     <Fragment>
       <ul className={classes["Character-List"]}>
@@ -19,6 +21,7 @@ const CharacterList: React.FC<{
           <li className={classes["Character-List__item"]} key={character.id}>
             <NavLink
               to={`${character.id}`}
+              state={{ prevPath: location }}
               className={classes["Character-List__item-content"]}
             >
               <img

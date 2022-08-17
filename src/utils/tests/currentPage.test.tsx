@@ -128,6 +128,97 @@ describe("[Utils] Characters Page Reducer", () => {
       initialState.currentSearchParams
     );
   });
+
+  test("if SET_SEARCH_PARAMS maintains filters when sort occurs", async () => {
+    const { result } = renderedHook();
+    const dispatch = result.current[1];
+
+    act(() =>
+      dispatch({
+        type: "SET_SEARCH_PARAMS",
+        payload: { newSearchParams: { name: "Spider" } },
+      })
+    );
+
+    expect(result.current[0].currentSearchParams).toEqual({
+      ...initialState.currentSearchParams,
+      name: "Spider",
+    });
+
+    act(() =>
+      dispatch({
+        type: "SET_SEARCH_PARAMS",
+        payload: { newSearchParams: { orderBy: "-name" } },
+      })
+    );
+
+    expect(result.current[0].currentSearchParams).toEqual({
+      ...initialState.currentSearchParams,
+      name: "Spider",
+      orderBy: "-name",
+    });
+  });
+
+  test("if SET_SEARCH_PARAMS maintains filters when pagination occurs", async () => {
+    const { result } = renderedHook();
+    const dispatch = result.current[1];
+
+    act(() =>
+      dispatch({
+        type: "SET_SEARCH_PARAMS",
+        payload: { newSearchParams: { name: "Spider", offset: "10" } },
+      })
+    );
+
+    expect(result.current[0].currentSearchParams).toEqual({
+      ...initialState.currentSearchParams,
+      name: "Spider",
+      offset: "10",
+    });
+
+    act(() =>
+      dispatch({
+        type: "SET_SEARCH_PARAMS",
+        payload: { newSearchParams: { offset: "0" } },
+      })
+    );
+
+    expect(result.current[0].currentSearchParams).toEqual({
+      ...initialState.currentSearchParams,
+      name: "Spider",
+    });
+  });
+
+  test("if SET_SEARCH_PARAMS resets offset and not others if filter occurs", async () => {
+    const { result } = renderedHook();
+    const dispatch = result.current[1];
+
+    act(() =>
+      dispatch({
+        type: "SET_SEARCH_PARAMS",
+        payload: { newSearchParams: { offset: "10", orderBy: "-name" } },
+      })
+    );
+
+    expect(result.current[0].currentSearchParams).toEqual({
+      ...initialState.currentSearchParams,
+      offset: "10",
+      orderBy: "-name",
+    });
+
+    act(() =>
+      dispatch({
+        type: "SET_SEARCH_PARAMS",
+        payload: { newSearchParams: { name: "Iron" } },
+      })
+    );
+
+    expect(result.current[0].currentSearchParams).toEqual({
+      ...initialState.currentSearchParams,
+      name: "Iron",
+      orderBy: "-name",
+    });
+  });
 });
 
 export {};

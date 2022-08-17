@@ -54,6 +54,18 @@ export const CharactersProvider: React.FC<{ children: React.ReactNode }> = (
   const setCurrentOffset = useCallback((newOffset: number) => {
     dispatch({ type: "SET_NEW_OFFSET", payload: { newOffset } });
   }, []);
+  const getCharacterById = useCallback(
+    (id: number) => {
+      if (state.charactersList) {
+        return state.charactersList.find(
+          (character: Character) => character.id === id
+        );
+      }
+
+      return null;
+    },
+    [state.charactersList]
+  );
 
   const prevButtonClick = () => {
     dispatch({ type: "PREV_CLICK" });
@@ -72,16 +84,6 @@ export const CharactersProvider: React.FC<{ children: React.ReactNode }> = (
     });
 
     isFirstRun.current = false;
-  };
-
-  const getCharacterById = (id: number) => {
-    if (state.charactersList) {
-      return state.charactersList.find(
-        (character: Character) => character.id === id
-      );
-    }
-
-    return null;
   };
 
   return (

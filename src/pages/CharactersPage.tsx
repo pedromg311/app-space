@@ -9,7 +9,6 @@ import React, {
 import CharacterList from "../components/CharacterList";
 import Filters from "../components/Filters";
 import SortBy from "../components/SortBy";
-import { Api } from "../store/api-data";
 import { Characters } from "../store/character-data";
 
 import { CSSTransition } from "react-transition-group";
@@ -23,6 +22,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import { getDefaultURL } from "../configs/_app-wide";
 
 const CharactersPage = () => {
   const {
@@ -35,26 +35,28 @@ const CharactersPage = () => {
     isFirstRun,
   } = useContext(Characters);
   const [shouldShowFilters, setShouldShowFilters] = useState(false);
-  const { getDefaultURL } = useContext(Api);
+  const [shouldReFetch, setShouldReFetch] = useState(false);
   const { isLoading, error, sendRequest } = useHttp();
   const [searchParams, setSearchParams] = useSearchParams();
   const nodeRef = useRef<HTMLDivElement>(null); //Used by CSSTransitions
 
   const backButtonClickHandler = () => {
     setShouldShowFilters(false);
+    setShouldReFetch(true);
     prevButtonClick();
   };
   const nextButtonClickHandler = () => {
     setShouldShowFilters(false);
+    setShouldReFetch(true);
     nextButtonClick();
   };
-  const handleSortSubmit = useCallback(
-    (sortBy: Record<string, string>) => setSearchParamsState(sortBy),
-    [setSearchParamsState]
-  );
-
+  const handleSortSubmit = (sortBy: Record<string, string>) => {
+    setShouldReFetch(true);
+    setSearchParamsState(sortBy);
+  };
   const handleFiltersSubmit = (filters: Record<string, string>) => {
     setShouldShowFilters(false);
+    setShouldReFetch(true);
     setSearchParamsState(filters);
   };
 
@@ -78,34 +80,37 @@ const CharactersPage = () => {
    * more state in memory
    */
   useEffect(() => {
-    let currentSearchParams: Record<string, string> = {
-      ...state.currentSearchParams,
-    };
+    if (shouldReFetch || isFirstRun?.current) {
+      let currentSearchParams: Record<string, string> = {
+        ...state.currentSearchParams,
+      };
 
-    if (isFirstRun?.current) {
-      searchParams.forEach((value, key) => {
-        currentSearchParams[key] = value;
+      if (isFirstRun?.current) {
+        searchParams.forEach((value, key) => {
+          currentSearchParams[key] = value;
 
-        if (key === "offset" && value !== "0") {
-          setCurrentOffset(+currentSearchParams[key]);
-        }
-      });
-    } else {
-      setSearchParams(currentSearchParams);
+          if (key === "offset" && value !== "0") {
+            setCurrentOffset(+currentSearchParams[key]);
+          }
+        });
+      } else {
+        setSearchParams(currentSearchParams);
+      }
+
+      const defaultURL = getDefaultURL();
+      const searchString = createSearchParams(currentSearchParams).toString();
+
+      setShouldReFetch(false);
+      sendRequest({ url: `${defaultURL}&${searchString}` }, transformData);
     }
-
-    const defaultURL = getDefaultURL();
-    const searchString = createSearchParams(currentSearchParams).toString();
-
-    sendRequest({ url: `${defaultURL}&${searchString}` }, transformData);
   }, [
     sendRequest,
     transformData,
-    getDefaultURL,
     searchParams,
     setSearchParams,
     state.currentSearchParams,
     isFirstRun,
+    shouldReFetch,
     setCurrentOffset,
   ]);
 

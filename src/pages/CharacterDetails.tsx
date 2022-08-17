@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import useHttp from "../hooks/use-http";
 import Character from "../model/Character";
 import { Characters } from "../store/character-data";
@@ -7,8 +7,8 @@ import { APIResponse } from "../types/Character.d";
 
 import classes from "../styles/pages/CharacterDetails.module.css";
 import CharacterDetailsList from "../components/CharacterDetailsList";
-import { Api } from "../store/api-data";
 import Spinner from "../components/Spinner";
+import { API_KEY, DEFAULT_URL, MAIN_PATH } from "../configs/_app-wide";
 
 /**
  * Technically this component could be way linear
@@ -17,22 +17,20 @@ import Spinner from "../components/Spinner";
  * through /characters first), but this way we can save on network traffic
  *
  */
-const CharacterDetails: React.FC = () => {
-  const navigate = useNavigate();
+const CharacterDetails: React.FC = (props) => {
+  const location = useLocation();
   const { getCharacterById, state } = useContext(Characters);
   const [currentCharacter, setCurrentCharacter] = useState<Character | null>(
     null
   );
   const { id: characterId } = useParams();
   const { isLoading, error, sendRequest } = useHttp();
-  const { url: baseUrl, apiKey } = useContext(Api);
-
-  const goBackClickHandler = () => navigate(-1);
+  const [prevLocation, setPrevLocation] = useState(MAIN_PATH);
 
   useEffect(() => {
     if (characterId) {
       if (!state.charactersList) {
-        const url = `${baseUrl}/${characterId}?${apiKey}`;
+        const url = `${DEFAULT_URL}/${characterId}?${API_KEY}`;
 
         sendRequest({ url }, async (responseContent: APIResponse) => {
           setCurrentCharacter(new Character(responseContent.data.results[0]));
@@ -45,13 +43,21 @@ const CharacterDetails: React.FC = () => {
         }
       }
     }
+
+    if (location.state) {
+      const locationState = (
+        location.state as Location & { prevPath: Location }
+      ).prevPath;
+      setPrevLocation(locationState.pathname + locationState.search);
+    }
   }, [
     characterId,
     getCharacterById,
     sendRequest,
     state.charactersList,
-    apiKey,
-    baseUrl,
+    setPrevLocation,
+    location.state,
+    location,
   ]);
 
   if (isLoading) {
@@ -65,12 +71,12 @@ const CharacterDetails: React.FC = () => {
           <Fragment>
             <main className={classes["Character-details__main"]}>
               <div className={classes["Character-details__header"]}>
-                <a
-                  onClick={goBackClickHandler}
+                <NavLink
+                  to={prevLocation}
                   className={classes["Character-details__header-link"]}
                 >
                   {"<"}
-                </a>
+                </NavLink>
                 <h1 className={classes["Character-details__title"]}>
                   {currentCharacter.name}
                 </h1>

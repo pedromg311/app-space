@@ -91,26 +91,24 @@ const setSearchParams = (
   if (Object.keys(newSearchParams).length === 0) {
     currentSearchParams = initialState.currentSearchParams;
   } else {
-    let isFilter = false;
-
     currentSearchParams = { ...newSearchParams };
 
-    if (!newSearchParams.offset) {
-      currentSearchParams.offset = initialState.currentSearchParams.offset;
-      currentOffset = +initialState.currentSearchParams.offset;
-
-      isFilter = true;
-    } else if (!newSearchParams.orderBy) {
+    /**
+     * If this passes we received a filter, and should erase
+     * all other filters whilst keeping the order and limit
+     */
+    if (!newSearchParams.offset && !newSearchParams.orderBy) {
       currentSearchParams.orderBy = state.currentSearchParams.orderBy;
-
-      isFilter = true;
-    }
-
-    if (!isFilter) {
+    } else {
       currentSearchParams = {
         ...state.currentSearchParams,
         ...currentSearchParams,
       };
+    }
+
+    if (!newSearchParams.offset) {
+      currentSearchParams.offset = initialState.currentSearchParams.offset;
+      currentOffset = +initialState.currentSearchParams.offset;
     }
 
     currentSearchParams.limit = initialState.currentSearchParams.limit;
