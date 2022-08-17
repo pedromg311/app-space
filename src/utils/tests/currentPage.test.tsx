@@ -3,17 +3,7 @@ import { act, renderHook, RenderHookResult } from "@testing-library/react";
 import { ListState, ReducerActions } from "../../types/CharacterList.d";
 import { buttonAndPageReducer } from "../_currentPage.utils";
 import * as DUMMY_DATA from "../../../public/DUMMY_DATA.json";
-import { APIResponse } from "../../types/Character.d";
-
-const initialState: ListState = {
-  shouldShowPrevButton: false,
-  shouldShowNextButton: true,
-  currentPage: 1,
-  numberOfResults: 0,
-  currentOffset: 0,
-  currentSearchParams: { orderBy: "name", offset: "10" },
-  charactersList: null,
-};
+import { initialState } from "../../store/character-data";
 
 const renderedHook = (
   state = initialState
@@ -106,8 +96,7 @@ describe("[Utils] Characters Page Reducer", () => {
     );
 
     expect(result.current[0].currentSearchParams).toEqual({
-      offset: "10",
-      orderBy: "name",
+      ...initialState.currentSearchParams,
       name: "Spider",
     });
   });
@@ -124,8 +113,7 @@ describe("[Utils] Characters Page Reducer", () => {
     );
 
     expect(result.current[0].currentSearchParams).toEqual({
-      orderBy: "name",
-      offset: "10",
+      ...initialState.currentSearchParams,
       name: "Spider",
     });
 
@@ -136,10 +124,9 @@ describe("[Utils] Characters Page Reducer", () => {
       })
     );
 
-    expect(result.current[0].currentSearchParams).toEqual({
-      offset: "10",
-      orderBy: "name",
-    });
+    expect(result.current[0].currentSearchParams).toEqual(
+      initialState.currentSearchParams
+    );
   });
 });
 

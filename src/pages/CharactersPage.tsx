@@ -17,7 +17,7 @@ import { CSSTransition } from "react-transition-group";
 import classes from "../styles/pages/CharactersPage.module.css";
 import { APIResponse } from "../types/Character.d";
 import useHttp from "../hooks/use-http";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const CharactersPage = () => {
   const {
@@ -26,12 +26,12 @@ const CharactersPage = () => {
     nextButtonClick,
     setSearchParamsState,
     setCharactersList,
+    isFirstRun,
   } = useContext(Characters);
   const [shouldShowFilters, setShouldShowFilters] = useState(false);
   const { getDefaultURL } = useContext(Api);
   const { isLoading, error, sendRequest } = useHttp();
-  const setSearchParams = useSearchParams()[1];
-  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const nodeRef = useRef<HTMLDivElement>(null); //Used by CSSTransitions
 
   const backButtonClickHandler = () => prevButtonClick();
@@ -66,32 +66,32 @@ const CharactersPage = () => {
    * more state in memory
    */
   useEffect(() => {
-    let currentSearchParams: Record<string, string> = {};
-    let currentLocation = location.search;
+    let currentSearchParams: Record<string, string> = {
+      ...state.currentSearchParams,
+    };
 
-    currentLocation = currentLocation.substring(1);
-    const searchParamsArray = currentLocation.split("&");
-
-    searchParamsArray.forEach((param) => {
-      const [key, value] = param.split("=");
-      currentSearchParams[key] = value;
-    });
-
-    setSearchParams({ ...currentSearchParams, ...state.currentSearchParams });
-    console.log("merged", currentSearchParams);
+    if (isFirstRun?.current) {
+      searchParams.forEach((value, key) => {
+        currentSearchParams[key] = value;
+      });
+    } else {
+      setSearchParams({ ...currentSearchParams });
+    }
 
     const defaultURL = getDefaultURL();
 
     sendRequest({ url: "DUMMY_DATA.json" }, transformData);
+
     //FIXME: build url with search params
     //sendRequest({ url: defaultURL + urlArgs }, transformData);
   }, [
     sendRequest,
-    setSearchParams,
     transformData,
     getDefaultURL,
+    searchParams,
+    setSearchParams,
     state.currentSearchParams,
-    location.search,
+    isFirstRun,
   ]);
 
   return (

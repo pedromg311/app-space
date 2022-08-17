@@ -1,10 +1,18 @@
-import React, { useCallback, useReducer } from "react";
+import React, {
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
+import { useSearchParams } from "react-router-dom";
 import Character from "../model/Character";
 import { APIResponse } from "../types/Character.d";
 import { ListState } from "../types/CharacterList.d";
 import { buttonAndPageReducer } from "../utils/_currentPage.utils";
 
-const initialState: ListState = {
+export const initialState: ListState = {
   shouldShowPrevButton: false,
   shouldShowNextButton: true,
   currentPage: 1,
@@ -16,6 +24,7 @@ const initialState: ListState = {
 
 export const Characters = React.createContext<{
   state: ListState;
+  isFirstRun: MutableRefObject<boolean> | null;
   setCharactersList: (responseContent: APIResponse) => void;
   prevButtonClick: () => void;
   nextButtonClick: () => void;
@@ -23,6 +32,7 @@ export const Characters = React.createContext<{
   getCharacterById: (id: number) => Character | null | undefined;
     }>({
       state: initialState,
+      isFirstRun: null,
       setCharactersList: () => {},
       prevButtonClick: () => {},
       nextButtonClick: () => {},
@@ -34,17 +44,33 @@ export const CharactersProvider: React.FC<{ children: React.ReactNode }> = (
   props
 ) => {
   const [state, dispatch] = useReducer(buttonAndPageReducer, initialState);
+  const isFirstRun = useRef(true);
+  const [searchParams] = useSearchParams();
+
   const setCharactersList = useCallback((responseContent: APIResponse) => {
     dispatch({
       type: "SET_CHARACTER_LIST",
       payload: { responseContent },
     });
   }, []);
-
   const prevButtonClick = () => dispatch({ type: "PREV_CLICK" });
   const nextButtonClick = () => dispatch({ type: "NEXT_CLICK" });
   const setSearchParamsState = (newSearchParams: Record<string, string>) => {
-    dispatch({ type: "SET_SEARCH_PARAMS", payload: { newSearchParams } });
+    let currentSearchParams: Record<string, string> = {};
+
+    if (Object.keys(newSearchParams).length > 0) {
+      searchParams.forEach((value, key) => {
+        currentSearchParams[key] = value;
+      });
+    }
+
+    dispatch({
+      type: "SET_SEARCH_PARAMS",
+      payload: {
+        newSearchParams: { ...currentSearchParams, ...newSearchParams },
+      },
+    });
+    isFirstRun.current = false;
   };
 
   const getCharacterById = (id: number) => {
@@ -61,6 +87,7 @@ export const CharactersProvider: React.FC<{ children: React.ReactNode }> = (
     <Characters.Provider
       value={{
         state,
+        isFirstRun,
         setCharactersList,
         prevButtonClick,
         nextButtonClick,

@@ -1,4 +1,5 @@
 import Character from "../model/Character";
+import { initialState } from "../store/character-data";
 import { APICharacterData, APIResponse } from "../types/Character.d";
 import { ListState, ReducerActions } from "../types/CharacterList.d";
 
@@ -83,22 +84,20 @@ const setSearchParams = (
   const { newSearchParams } = payload;
 
   let currentSearchParams: Record<string, string> = {};
-  const { offset, orderBy } = state.currentSearchParams;
 
   if (Object.keys(newSearchParams).length === 0) {
-    if (offset) {
-      currentSearchParams.offset = offset;
-    }
-    if (orderBy) {
-      currentSearchParams.orderBy = orderBy;
-    }
+    currentSearchParams = initialState.currentSearchParams;
   } else {
-    currentSearchParams = state.currentSearchParams;
+    currentSearchParams = { ...state.currentSearchParams, ...newSearchParams };
+
+    if (!newSearchParams.offset) {
+      currentSearchParams.offset = state.currentSearchParams.offset;
+    }
   }
 
   return {
     ...state,
-    currentSearchParams: { ...currentSearchParams, ...newSearchParams },
+    currentSearchParams: { ...currentSearchParams },
   };
 };
 
