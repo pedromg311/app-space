@@ -42,7 +42,7 @@ If an item on the list is clicked the user is taken to that character's details.
 
 ## Application:
 
-The application is currently hosted on firebase, and can be accessed with the following link: https://app-space-93128.web.app/
+The application is currently hosted on firebase, and can be accessed with the following link: https://app-space-93128.firebaseapp.com/ or https://app-space-93128.web.app (not secure)
 [WARNING] - The API being used has a request limit of 3000 calls per month
 
 ### Final notes:
