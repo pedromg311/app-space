@@ -18,6 +18,8 @@
 
 html,
 body {
+  height: 100%;
+
   font-family: "Orkney", sans-serif;
 
   background-color: var(--main-color);
@@ -74,4 +76,11 @@ body {
   .App-main__filter-container-enter-done {
     --filter-animation-offset: 87%;
   }
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
 }
