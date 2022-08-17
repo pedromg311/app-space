@@ -1,14 +1,32 @@
+/**** SKIP TO CONTENT ****/
+.App-main__skip-to-content {
+  position: absolute;
+  left: 0;
+
+  height: 30px;
+  padding: 8px;
+
+  background-color: var(--secondary-color);
+
+  transform: translateY(-100%);
+  transition: transform 0.3s;
+}
+
+.App-main__skip-to-content:focus {
+  transform: translateY(0%);
+}
+
 /****  MAIN ****/
 
 .App-main {
   position: relative;
 
-  margin: 70px var(--spacing-medium) 0 var(--spacing-medium);
+  margin: 80px var(--spacing-medium) 0 var(--spacing-medium);
 }
 
 .App-main__filter-container {
   position: absolute;
-  top: -410px;
+  top: -420px;
 
   width: 100%;
 
@@ -72,8 +90,8 @@
 
 @media only screen and (min-width: 990px) {
   .App-main__filter-container {
-    top: -255px;
-    width: 50%;
+    top: -325px;
+    width: 60%;
   }
 
   .App-main {
@@ -84,5 +102,12 @@
 
     margin-left: var(--spacing-desktop-margin);
     margin-right: var(--spacing-desktop-margin);
+  }
+}
+
+@media only screen and (min-width: 2000px) {
+  .App-main {
+    max-width: 1900px;
+    margin: 80px auto 0 auto;
   }
 }

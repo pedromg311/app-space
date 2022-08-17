@@ -32,6 +32,12 @@ const useHttp = () => {
 
         applyData(data);
       } catch (error: any) {
+        /**
+         * On a proper App better error messages would be used
+         * but here except for a possible bug, the only point of
+         * failure is in the API calls, and the error that it returns
+         * be it 400 or 500 won't be relevant to the user
+         */
         setError(error.message || "Something went wrong!");
       }
 

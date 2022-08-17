@@ -94,8 +94,11 @@ const setSearchParams = (
     currentSearchParams = { ...newSearchParams };
 
     /**
-     * If this passes we received a filter, and should erase
-     * all other filters whilst keeping the order and limit
+     * If the execution falls on:
+     *
+     * 1 Assertion => A filter was passe. Erase all other filters, but keep sort and limit
+     * 2 Assertion => Not a filter, so keep old filter values. A sort or pagination request
+     * 3 Assertion => A request that should reset the pagination, like a filter, or a sort
      */
     if (!newSearchParams.offset && !newSearchParams.orderBy) {
       currentSearchParams.orderBy = state.currentSearchParams.orderBy;

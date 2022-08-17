@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import Character from "../model/Character";
 
 import classes from "../styles/components/CharacterDetailsList.module.css";
 import { TransformedCharacterType } from "../types/Character.d";

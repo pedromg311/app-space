@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import { act, renderHook, RenderHookResult } from "@testing-library/react";
 import { ListState, ReducerActions } from "../../types/CharacterList.d";
-import { buttonAndPageReducer } from "../_currentPage.utils";
+import { buttonAndPageReducer } from "../_list-reducer";
 import * as DUMMY_DATA from "../../assets/DUMMY_DATA.json";
 import { initialState } from "../../store/character-data";
 

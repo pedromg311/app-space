@@ -7,7 +7,7 @@ import React, {
 import Character from "../model/Character";
 import { APIResponse } from "../types/Character.d";
 import { ListState } from "../types/CharacterList.d";
-import { buttonAndPageReducer } from "../utils/_currentPage.utils";
+import { buttonAndPageReducer } from "../utils/_list-reducer";
 
 export const initialState: ListState = {
   shouldShowPrevButton: false,

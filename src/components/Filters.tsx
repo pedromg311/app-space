@@ -52,6 +52,10 @@ const Inputs: React.FC<{
         filters.events = formatValue(eventsInputValues.value);
       }
 
+      /**
+       * Filters are allowed to be empty, so that the user can
+       * reset the filters list.
+       */
       props.onFiltersSubmit(filters);
 
       resetNameInput();
@@ -65,12 +69,17 @@ const Inputs: React.FC<{
   return (
     <div className={classes["Filter"]}>
       <p className={classes["Filter__hint"]}>Leave empty to reset list</p>
-      <form className={classes["Filter__form"]} onSubmit={submitHandler}>
+      <form
+        className={classes["Filter__form"]}
+        onSubmit={submitHandler}
+        aria-label="Filter Characters List"
+      >
         <div className={classes["Filter__item"]}>
           <label className={classes["Filter__item-label"]} htmlFor="name">
             Name starts with:
           </label>
           <input
+            className={classes["Filter__item-input"]}
             type="text"
             id="name"
             value={enteredName}
@@ -87,6 +96,8 @@ const Inputs: React.FC<{
                 {list.title}:
               </label>
               <input
+                aria-label="Insert ids, separated by ,"
+                className={classes["Filter__item-input"]}
                 type="text"
                 id={list.title}
                 value={list.value}
@@ -101,6 +112,7 @@ const Inputs: React.FC<{
 
         <div className={classes["Filter__controls"]}>
           <button
+            aria-label="Toggle filters visibility"
             className={`App__button--primary ${classes["Filter__controls-button"]}`}
             type="submit"
           >

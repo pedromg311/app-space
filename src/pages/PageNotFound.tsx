@@ -1,5 +1,4 @@
 import React from "react";
-import Spinner from "../components/Spinner";
 
 import classes from "../styles/pages/PageNotFound.module.css";
 

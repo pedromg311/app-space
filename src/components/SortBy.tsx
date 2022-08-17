@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { SortOptions } from "../types/SortBy.d";
 
 import classes from "../styles/components/SortBy.module.css";
@@ -34,6 +34,10 @@ const SortBy: React.FC<{
   const currentOrderBy = searchParams.get("orderBy");
   const { state } = useContext(Characters);
 
+  /**
+   * Since the API returns values sorted by name,
+   * i force name to be active when a sorting is not detected
+   */
   useEffect(() => {
     let currentIndex = sortingOptions.findIndex((option) =>
       currentOrderBy?.includes(option.encodedName)
@@ -46,6 +50,11 @@ const SortBy: React.FC<{
     setCurrentlyActiveIndex(currentIndex);
   }, [currentOrderBy]);
 
+  /**
+   * Compares the clicked value to the one set either on the URL
+   * or on the global state, to check if it should change sorting
+   * or change sorting direction (if the same sort was chosen)
+   */
   const handleButtonClick = (index: number) => {
     const { encodedName } = sortingOptions[index];
     let currentSearchParams = "";
@@ -55,6 +64,7 @@ const SortBy: React.FC<{
     } else {
       currentSearchParams = currentOrderBy;
     }
+
     const isSameSorting = currentSearchParams.includes(encodedName);
 
     const orderBy = isSameSorting
@@ -66,7 +76,7 @@ const SortBy: React.FC<{
   };
 
   return (
-    <div className={classes["SortBy"]}>
+    <div className={classes["SortBy"]} id="main">
       <p className={classes["SortBy__title"]}>Sort by:</p>
       <ul className={classes["SortBy__options"]}>
         {sortingOptions.map((option, index) => {
@@ -78,6 +88,7 @@ const SortBy: React.FC<{
                     ? classes["SortBy__options-button--active"]
                     : ""
                 }`}
+                aria-label={`Sort by ${option.name}`}
                 onClick={handleButtonClick.bind(null, index)}
               >
                 {option.name}

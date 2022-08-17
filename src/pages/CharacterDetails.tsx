@@ -10,14 +10,7 @@ import CharacterDetailsList from "../components/CharacterDetailsList";
 import Spinner from "../components/Spinner";
 import { API_KEY, DEFAULT_URL, MAIN_PATH } from "../configs/_app-wide";
 
-/**
- * Technically this component could be way linear
- * and just do an API call for the id of the character
- * (just like it does when a user lands on this page without passing
- * through /characters first), but this way we can save on network traffic
- *
- */
-const CharacterDetails: React.FC = (props) => {
+const CharacterDetails: React.FC = () => {
   const location = useLocation();
   const { getCharacterById, state } = useContext(Characters);
   const [currentCharacter, setCurrentCharacter] = useState<Character | null>(
@@ -27,6 +20,13 @@ const CharacterDetails: React.FC = (props) => {
   const { isLoading, error, sendRequest } = useHttp();
   const [prevLocation, setPrevLocation] = useState(MAIN_PATH);
 
+  /**
+   * Technically this component could be way leaner
+   * and just do an API call for the id of the character
+   * (just like it does when a user lands on this page without passing
+   * through /characters first), but this way we can save on network traffic
+   * and loading resources that are already loaded
+   */
   useEffect(() => {
     if (characterId) {
       if (!state.charactersList) {
@@ -44,6 +44,11 @@ const CharacterDetails: React.FC = (props) => {
       }
     }
 
+    /**
+     * Ensure that a user caa get back to the main list
+     * inside the current location (Not strictly necessary,
+     * but i wanted to try the router with location)
+     */
     if (location.state) {
       const locationState = (
         location.state as Location & { prevPath: Location }
@@ -57,7 +62,6 @@ const CharacterDetails: React.FC = (props) => {
     state.charactersList,
     setPrevLocation,
     location.state,
-    location,
   ]);
 
   if (isLoading) {

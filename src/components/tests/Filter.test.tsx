@@ -15,7 +15,9 @@ const setup = () => {
   const storiesInput = utils.getByLabelText("Stories", { exact: false });
   const eventsInput = utils.getByLabelText("Events", { exact: false });
 
-  const formButton = utils.getByRole("button", { name: "Filter" });
+  const formButton = utils.getByRole("button", {
+    name: "Toggle filters visibility",
+  });
 
   return {
     nameInput,
