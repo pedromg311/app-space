@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { SortOptions } from "../types/SortBy.d";
 
 import classes from "../styles/components/SortBy.module.css";
 
-const sortingOptions: SortOptions = {
-  currentlyActiveIndex: -1,
-  options: [
-    {
-      name: "Name",
-      encodedName: "nameStartsWith",
-      isAsc: undefined,
-    },
-    {
-      name: "Modified",
-      encodedName: "modified",
-      isAsc: undefined,
-    },
-  ],
-};
+const sortingOptions: SortOptions = [
+  {
+    name: "Name",
+    encodedName: "name",
+  },
+  {
+    name: "Modified",
+    encodedName: "modified",
+  },
+];
 
 /**
  * The only sorting options on the API
@@ -34,11 +29,12 @@ const SortBy: React.FC<{
 }> = (props) => {
   const { sortClickHandler } = props;
   const [searchParams] = useSearchParams();
-  const [sortOptions, setSortOptions] = useState(sortingOptions);
+  const [currentlyActiveIndex, setCurrentlyActiveIndex] = useState(-1);
   const currentOrderBy = searchParams.get("orderBy");
+  let location = useLocation();
 
   useEffect(() => {
-    let currentIndex = sortOptions.options.findIndex((option) =>
+    let currentIndex = sortingOptions.findIndex((option) =>
       currentOrderBy?.includes(option.encodedName)
     );
 
@@ -46,14 +42,11 @@ const SortBy: React.FC<{
       currentIndex = 0;
     }
 
-    setSortOptions((state) => ({
-      ...state,
-      currentlyActiveIndex: currentIndex,
-    }));
-  }, [sortOptions.options, searchParams, currentOrderBy]);
+    setCurrentlyActiveIndex(currentIndex);
+  }, [currentOrderBy, location]);
 
   const handleButtonClick = (index: number) => {
-    const { encodedName } = sortOptions.options[index];
+    const { encodedName } = sortingOptions[index];
     const isSameSorting = currentOrderBy?.includes(encodedName);
 
     const orderBy = isSameSorting
@@ -67,12 +60,12 @@ const SortBy: React.FC<{
     <div className={classes["SortBy"]}>
       <p className={classes["SortBy__title"]}>Sort by:</p>
       <ul className={classes["SortBy__options"]}>
-        {sortOptions.options.map((option, index) => {
+        {sortingOptions.map((option, index) => {
           return (
             <li className={classes["SortBy__options-item"]} key={option.name}>
               <button
                 className={`${classes["SortBy__options-button"]} ${
-                  sortOptions.currentlyActiveIndex == index
+                  currentlyActiveIndex == index
                     ? classes["SortBy__options-button--active"]
                     : ""
                 }`}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 
 /**
  * Might be a bit overkill to have this here, but
@@ -23,9 +23,9 @@ export const Api = React.createContext<{
     }>(initialState);
 
 export const ApiProvider: React.FC<{ children: React.ReactNode }> = (props) => {
-  const getDefaultURL = () => {
+  const getDefaultURL = useCallback(() => {
     return `${initialState.url}${initialState.defaultSearchParams}&${initialState.apiKey}`;
-  };
+  }, []);
   return (
     <Api.Provider
       value={{

@@ -7,6 +7,7 @@ import { APIResponse } from "../types/Character.d";
 
 import classes from "../styles/pages/CharacterDetails.module.css";
 import CharacterDetailsList from "../components/CharacterDetailsList";
+import { Api } from "../store/api-data";
 
 /**
  * Technically this component could be way linear
@@ -22,23 +23,16 @@ const CharacterDetails = () => {
   );
   const { id: characterId } = useParams();
   const { isLoading, error, sendRequest } = useHttp();
+  const { url: baseUrl, apiKey } = useContext(Api);
 
   useEffect(() => {
     if (characterId) {
       if (!state.charactersList) {
-        //FIXME: Replace with correct api call and no find needed
-        sendRequest(
-          { url: "/DUMMY_DATA.json" },
-          async (responseContent: APIResponse) => {
-            const characterResponse = responseContent.data.results.find(
-              (character) => character.id === parseInt(characterId, 10)
-            );
+        const url = `${baseUrl}/${characterId}?${apiKey}`;
 
-            if (characterResponse) {
-              setCurrentCharacter(new Character(characterResponse));
-            }
-          }
-        );
+        // sendRequest({ url }, async (responseContent: APIResponse) => {
+        //   setCurrentCharacter(new Character(responseContent.data.results[0]));
+        // });
       } else {
         const characterDetails = getCharacterById(parseInt(characterId, 10));
 
@@ -47,7 +41,14 @@ const CharacterDetails = () => {
         }
       }
     }
-  }, [characterId, getCharacterById, sendRequest, state.charactersList]);
+  }, [
+    characterId,
+    getCharacterById,
+    sendRequest,
+    state.charactersList,
+    apiKey,
+    baseUrl,
+  ]);
 
   if (isLoading) {
     return <p>Loading</p>;

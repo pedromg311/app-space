@@ -48,7 +48,7 @@ describe("[Component] Character List", () => {
     fireEvent.change(comicsInput, { target: { value: "15,51" } });
     act(() => formButton.click());
 
-    expect(filterSubmitHandler).toHaveBeenCalledWith("comics=15%2C51");
+    expect(filterSubmitHandler).toHaveBeenCalledWith({ comics: "15%2C51" });
   });
 
   test("if series is set correctly", async () => {
@@ -57,7 +57,7 @@ describe("[Component] Character List", () => {
     fireEvent.change(seriesInput, { target: { value: "15,51" } });
     act(() => formButton.click());
 
-    expect(filterSubmitHandler).toHaveBeenCalledWith("series=15%2C51");
+    expect(filterSubmitHandler).toHaveBeenCalledWith({ series: "15%2C51" });
   });
 
   test("if stories is set correctly", async () => {
@@ -66,7 +66,7 @@ describe("[Component] Character List", () => {
     fireEvent.change(storiesInput, { target: { value: "15,51" } });
     act(() => formButton.click());
 
-    expect(filterSubmitHandler).toHaveBeenCalledWith("stories=15%2C51");
+    expect(filterSubmitHandler).toHaveBeenCalledWith({ stories: "15%2C51" });
   });
 
   test("if events is set correctly", async () => {
@@ -75,7 +75,7 @@ describe("[Component] Character List", () => {
     fireEvent.change(eventsInput, { target: { value: "15,51" } });
     act(() => formButton.click());
 
-    expect(filterSubmitHandler).toHaveBeenCalledWith("events=15%2C51");
+    expect(filterSubmitHandler).toHaveBeenCalledWith({ events: "15%2C51" });
   });
 
   test("if startsWith is set correctly", async () => {
@@ -84,9 +84,9 @@ describe("[Component] Character List", () => {
     fireEvent.change(nameInput, { target: { value: "Spider-man" } });
     act(() => formButton.click());
 
-    expect(filterSubmitHandler).toHaveBeenCalledWith(
-      "nameStartsWith=Spider-man"
-    );
+    expect(filterSubmitHandler).toHaveBeenCalledWith({
+      name: "Spider-man",
+    });
   });
 
   test("if filter query is added correctly when using more than one", async () => {
@@ -98,9 +98,11 @@ describe("[Component] Character List", () => {
 
     act(() => formButton.click());
 
-    expect(filterSubmitHandler).toHaveBeenCalledWith(
-      "nameStartsWith=Iron%20Man&stories=20&events=15%2C51"
-    );
+    expect(filterSubmitHandler).toHaveBeenCalledWith({
+      events: "15%2C51",
+      name: "Iron%20Man",
+      stories: "20",
+    });
   });
 });
 

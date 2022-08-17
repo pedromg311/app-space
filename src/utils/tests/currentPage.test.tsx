@@ -11,7 +11,7 @@ const initialState: ListState = {
   currentPage: 1,
   numberOfResults: 0,
   currentOffset: 0,
-  currentSearchParams: { orderBy: "nameStartsWith" },
+  currentSearchParams: { orderBy: "name", offset: "10" },
   charactersList: null,
 };
 
@@ -31,38 +31,6 @@ describe("[Utils] Characters Page Reducer", () => {
     const [state] = renderedHook().result.current;
 
     expect(state).toEqual(initialState);
-  });
-
-  test("if NEXT_CLICK increments the counter", async () => {
-    const { result } = renderedHook();
-    const dispatch = result.current[1];
-
-    act(() => dispatch({ type: "NEXT_CLICK" }));
-
-    expect(result.current[0].currentPage).toEqual(2);
-  });
-
-  test("if PREV_CLICK decrements the counter", async () => {
-    const customState = { ...initialState, currentPage: 2 };
-    const { result } = renderHook(() =>
-      useReducer(buttonAndPageReducer, customState)
-    );
-
-    const dispatch = result.current[1];
-    act(() => dispatch({ type: "PREV_CLICK" }));
-
-    expect(result.current[0].currentPage).toEqual(1);
-  });
-
-  test("if counter stays at 1 if PREV_CLICK is clicked again", async () => {
-    const { result } = renderHook(() =>
-      useReducer(buttonAndPageReducer, initialState)
-    );
-
-    const dispatch = result.current[1];
-    act(() => dispatch({ type: "PREV_CLICK" }));
-
-    expect(result.current[0].currentPage).toEqual(1);
   });
 
   test("if SET_CHARACTER_LIST sets the state correctly", async () => {
@@ -87,53 +55,91 @@ describe("[Utils] Characters Page Reducer", () => {
     expect(result.current[0].shouldShowNextButton).toBe(true);
   });
 
-  test("if NEXT_CLICK enables prev button if necessary", async () => {
+  test("if NEXT_CLICK sets the offset correctly", () => {
     const { result } = renderedHook();
     const dispatch = result.current[1];
 
     act(() => dispatch({ type: "NEXT_CLICK" }));
-
-    expect(result.current[0].shouldShowPrevButton).toEqual(true);
-  });
-
-  test("if PREV_CLICK enables next button", async () => {
-    const customState = { ...initialState, currentPage: 2 };
-    const { result } = renderHook(() =>
-      useReducer(buttonAndPageReducer, customState)
-    );
-
-    const dispatch = result.current[1];
-    act(() => dispatch({ type: "PREV_CLICK" }));
-
-    expect(result.current[0].shouldShowPrevButton).toEqual(true);
-  });
-
-  test("if next button is hidden if not needed", async () => {
-    const customState = { ...initialState, numberOfResults: 10 };
-    const { result } = renderHook(() =>
-      useReducer(buttonAndPageReducer, customState)
-    );
-
-    const dispatch = result.current[1];
-    //Dummy click just to set the state even if doesn't really make sense in the context of this test
     act(() => dispatch({ type: "NEXT_CLICK" }));
 
-    const [state] = result.current;
-    expect(state.shouldShowNextButton).toBe(false);
+    expect(result.current[0].currentOffset).toEqual(24);
   });
-
-  test("if prev button is hidden if not needed", async () => {
-    const customState = { ...initialState };
-    const { result } = renderHook(() =>
-      useReducer(buttonAndPageReducer, customState)
-    );
-
+  test("if PREV_CLICK sets the offset correctly", () => {
+    const { result } = renderedHook();
     const dispatch = result.current[1];
-    //Dummy click just to set the state even if doesn't really make sense in the context of this test
+
+    act(() => dispatch({ type: "NEXT_CLICK" }));
+    act(() => dispatch({ type: "NEXT_CLICK" }));
+
     act(() => dispatch({ type: "PREV_CLICK" }));
 
-    const [state] = result.current;
-    expect(state.shouldShowPrevButton).toBe(false);
+    expect(result.current[0].currentOffset).toEqual(12);
+
+    act(() => dispatch({ type: "PREV_CLICK" }));
+    act(() => dispatch({ type: "PREV_CLICK" }));
+    act(() => dispatch({ type: "PREV_CLICK" }));
+
+    expect(result.current[0].currentOffset).toEqual(0);
+  });
+
+  test("if PREV_CLICK sets the offset to 0 if negative", () => {
+    const { result } = renderedHook();
+    const dispatch = result.current[1];
+
+    act(() => dispatch({ type: "NEXT_CLICK" }));
+    act(() => dispatch({ type: "PREV_CLICK" }));
+    act(() => dispatch({ type: "PREV_CLICK" }));
+    act(() => dispatch({ type: "PREV_CLICK" }));
+
+    expect(result.current[0].currentOffset).toEqual(0);
+  });
+
+  test("if SET_SEARCH_PARAMS sets the params correctly", () => {
+    const { result } = renderedHook();
+    const dispatch = result.current[1];
+
+    act(() =>
+      dispatch({
+        type: "SET_SEARCH_PARAMS",
+        payload: { newSearchParams: { name: "Spider" } },
+      })
+    );
+
+    expect(result.current[0].currentSearchParams).toEqual({
+      offset: "10",
+      orderBy: "name",
+      name: "Spider",
+    });
+  });
+
+  test("if SET_SEARCH_PARAMS resets filters when it receives an empty value", () => {
+    const { result } = renderedHook();
+    const dispatch = result.current[1];
+
+    act(() =>
+      dispatch({
+        type: "SET_SEARCH_PARAMS",
+        payload: { newSearchParams: { name: "Spider" } },
+      })
+    );
+
+    expect(result.current[0].currentSearchParams).toEqual({
+      orderBy: "name",
+      offset: "10",
+      name: "Spider",
+    });
+
+    act(() =>
+      dispatch({
+        type: "SET_SEARCH_PARAMS",
+        payload: { newSearchParams: {} },
+      })
+    );
+
+    expect(result.current[0].currentSearchParams).toEqual({
+      offset: "10",
+      orderBy: "name",
+    });
   });
 });
 

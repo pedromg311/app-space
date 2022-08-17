@@ -5,7 +5,7 @@ import { formatValue, isValidIdsList } from "../utils/_filters.utils";
 import classes from "../styles/components/Filter.module.css";
 
 const Inputs: React.FC<{
-  onFiltersSubmit: (filters: string) => void;
+  onFiltersSubmit: (filters: Record<string, string>) => void;
   onCancel: () => void;
 }> = (props) => {
   const {
@@ -34,25 +34,25 @@ const Inputs: React.FC<{
       storiesInputValues.isValid &&
       eventsInputValues.isValid
     ) {
-      const filters = [];
+      const filters: Record<string, string> = {};
 
       if (enteredName) {
-        filters.push(`nameStartsWith=${formatValue(enteredName)}`);
+        filters.name = formatValue(enteredName);
       }
       if (comicsInputValues.value) {
-        filters.push(`comics=${formatValue(comicsInputValues.value)}`);
+        filters.comics = formatValue(comicsInputValues.value);
       }
       if (seriesInputValues.value) {
-        filters.push(`series=${formatValue(seriesInputValues.value)}`);
+        filters.series = formatValue(seriesInputValues.value);
       }
       if (storiesInputValues.value) {
-        filters.push(`stories=${formatValue(storiesInputValues.value)}`);
+        filters.stories = formatValue(storiesInputValues.value);
       }
       if (eventsInputValues.value) {
-        filters.push(`events=${formatValue(eventsInputValues.value)}`);
+        filters.events = formatValue(eventsInputValues.value);
       }
 
-      props.onFiltersSubmit(filters.join("&"));
+      props.onFiltersSubmit(filters);
 
       resetNameInput();
       comicsInputValues.reset();

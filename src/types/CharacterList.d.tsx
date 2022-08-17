@@ -18,4 +18,7 @@ export type ReducerActions =
       type: "SET_CHARACTER_LIST";
       payload: { responseContent: APIResponse };
     }
-  | { type: "SET_SORT"; payload: { sortBy: Record<string, string> } };
+  | {
+      type: "SET_SEARCH_PARAMS";
+      payload: { newSearchParams: Record<string, string> };
+    };

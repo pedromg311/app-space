@@ -22,6 +22,10 @@ const nextClickAction = (state: ListState) => {
   return {
     ...state,
     currentOffset,
+    currentSearchParams: {
+      ...state.currentSearchParams,
+      offset: currentOffset.toString(),
+    },
   };
 };
 
@@ -35,6 +39,10 @@ const prevClickAction = (state: ListState) => {
   return {
     ...state,
     currentOffset,
+    currentSearchParams: {
+      ...state.currentSearchParams,
+      offset: currentOffset.toString(),
+    },
   };
 };
 
@@ -68,16 +76,30 @@ const setCharactersList = (
   };
 };
 
-const setListSort = (
+const setSearchParams = (
   state: ListState,
-  payload: { sortBy: Record<string, string> }
+  payload: { newSearchParams: Record<string, string> }
 ) => {
-  const currentSearchParams = {
-    ...state.currentSearchParams,
-    ...payload.sortBy,
-  };
+  const { newSearchParams } = payload;
 
-  return { ...state, currentSearchParams };
+  let currentSearchParams: Record<string, string> = {};
+  const { offset, orderBy } = state.currentSearchParams;
+
+  if (Object.keys(newSearchParams).length === 0) {
+    if (offset) {
+      currentSearchParams.offset = offset;
+    }
+    if (orderBy) {
+      currentSearchParams.orderBy = orderBy;
+    }
+  } else {
+    currentSearchParams = state.currentSearchParams;
+  }
+
+  return {
+    ...state,
+    currentSearchParams: { ...currentSearchParams, ...newSearchParams },
+  };
 };
 
 export const buttonAndPageReducer = (
@@ -91,7 +113,7 @@ export const buttonAndPageReducer = (
     return prevClickAction(state);
   case "SET_CHARACTER_LIST":
     return setCharactersList(state, action.payload);
-  case "SET_SORT":
-    return setListSort(state, action.payload);
+  case "SET_SEARCH_PARAMS":
+    return setSearchParams(state, action.payload);
   }
 };
