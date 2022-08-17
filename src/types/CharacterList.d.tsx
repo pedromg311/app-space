@@ -21,4 +21,8 @@ export type ReducerActions =
   | {
       type: "SET_SEARCH_PARAMS";
       payload: { newSearchParams: Record<string, string> };
+    }
+  | {
+      type: "SET_NEW_OFFSET";
+      payload: { newOffset: number };
     };

@@ -35,6 +35,16 @@ body {
   font-weight: bold;
 }
 
+.App-load__error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 50vh;
+
+  text-align: center;
+}
+
 /**** ANIMATIONS ****/
 
 .App-main__filter-container-enter {

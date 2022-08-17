@@ -22,3 +22,7 @@
   height: 50%;
   margin-right: 12px;
 }
+
+.App-loading__container {
+  height: 90vh;
+}

@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import Character from "../../model/Character";
 import CharacterList from "../CharacterList";
-import * as DUMMY_DATA from "../../../public/DUMMY_DATA.json";
+import * as DUMMY_DATA from "../../assets/DUMMY_DATA.json";
 import { BrowserRouter } from "react-router-dom";
 
 const mockedData = DUMMY_DATA.data.results;

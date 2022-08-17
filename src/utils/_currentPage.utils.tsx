@@ -10,7 +10,6 @@ const shouldEnableNextArrow = (
   currentOffset: number,
   count: number
 ): boolean => {
-  console.log(numberOfResults, currentOffset, count);
   const numberOfStillAvailableItems = numberOfResults - (currentOffset + count);
 
   return (
@@ -20,7 +19,6 @@ const shouldEnableNextArrow = (
 
 const nextClickAction = (state: ListState) => {
   const currentOffset = state.currentOffset + numberOfResultsPerPage;
-  console.log("store", currentOffset);
   return {
     ...state,
     currentOffset,
@@ -93,12 +91,29 @@ const setSearchParams = (
   if (Object.keys(newSearchParams).length === 0) {
     currentSearchParams = initialState.currentSearchParams;
   } else {
-    currentSearchParams = { ...state.currentSearchParams, ...newSearchParams };
+    let isFilter = false;
+
+    currentSearchParams = { ...newSearchParams };
 
     if (!newSearchParams.offset) {
       currentSearchParams.offset = initialState.currentSearchParams.offset;
       currentOffset = +initialState.currentSearchParams.offset;
+
+      isFilter = true;
+    } else if (!newSearchParams.orderBy) {
+      currentSearchParams.orderBy = state.currentSearchParams.orderBy;
+
+      isFilter = true;
     }
+
+    if (!isFilter) {
+      currentSearchParams = {
+        ...state.currentSearchParams,
+        ...currentSearchParams,
+      };
+    }
+
+    currentSearchParams.limit = initialState.currentSearchParams.limit;
   }
 
   return {
@@ -121,5 +136,7 @@ export const buttonAndPageReducer = (
     return setCharactersList(state, action.payload);
   case "SET_SEARCH_PARAMS":
     return setSearchParams(state, action.payload);
+  case "SET_NEW_OFFSET":
+    return { ...state, currentOffset: action.payload.newOffset };
   }
 };

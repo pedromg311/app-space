@@ -21,7 +21,6 @@
 
   position: relative;
   height: 30px;
-  margin-bottom: var(--spacing-extra-large);
 
   border-right: 2px solid var(--highlight-color);
   border-bottom: 2px solid var(--highlight-color);
@@ -69,17 +68,7 @@
   text-align: end;
 }
 
-/**** MISC ****/
-
-.App-main__error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  height: 50vh;
-
-  text-align: center;
-}
+/**** DESKTOP ****/
 
 @media only screen and (min-width: 990px) {
   .App-main__filter-container {

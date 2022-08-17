@@ -4,7 +4,6 @@ import React, {
   useReducer,
   useRef,
 } from "react";
-import { useSearchParams } from "react-router-dom";
 import Character from "../model/Character";
 import { APIResponse } from "../types/Character.d";
 import { ListState } from "../types/CharacterList.d";
@@ -24,6 +23,7 @@ export const Characters = React.createContext<{
   state: ListState;
   isFirstRun: MutableRefObject<boolean> | null;
   setCharactersList: (responseContent: APIResponse) => void;
+  setCurrentOffset: (newOffset: number) => void;
   prevButtonClick: () => void;
   nextButtonClick: () => void;
   setSearchParamsState: (searchParams: Record<string, string>) => void;
@@ -32,6 +32,7 @@ export const Characters = React.createContext<{
       state: initialState,
       isFirstRun: null,
       setCharactersList: () => {},
+      setCurrentOffset: () => {},
       prevButtonClick: () => {},
       nextButtonClick: () => {},
       setSearchParamsState: () => {},
@@ -50,6 +51,10 @@ export const CharactersProvider: React.FC<{ children: React.ReactNode }> = (
       payload: { responseContent },
     });
   }, []);
+  const setCurrentOffset = useCallback((newOffset: number) => {
+    dispatch({ type: "SET_NEW_OFFSET", payload: { newOffset } });
+  }, []);
+
   const prevButtonClick = () => {
     dispatch({ type: "PREV_CLICK" });
     isFirstRun.current = false;
@@ -85,6 +90,7 @@ export const CharactersProvider: React.FC<{ children: React.ReactNode }> = (
         state,
         isFirstRun,
         setCharactersList,
+        setCurrentOffset,
         prevButtonClick,
         nextButtonClick,
         getCharacterById,

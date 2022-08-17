@@ -17,7 +17,12 @@ import { CSSTransition } from "react-transition-group";
 import classes from "../styles/pages/CharactersPage.module.css";
 import { APIResponse } from "../types/Character.d";
 import useHttp from "../hooks/use-http";
-import { createSearchParams, useSearchParams } from "react-router-dom";
+import {
+  createSearchParams,
+  useLocation,
+  useSearchParams,
+} from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 const CharactersPage = () => {
   const {
@@ -26,6 +31,7 @@ const CharactersPage = () => {
     nextButtonClick,
     setSearchParamsState,
     setCharactersList,
+    setCurrentOffset,
     isFirstRun,
   } = useContext(Characters);
   const [shouldShowFilters, setShouldShowFilters] = useState(false);
@@ -79,6 +85,10 @@ const CharactersPage = () => {
     if (isFirstRun?.current) {
       searchParams.forEach((value, key) => {
         currentSearchParams[key] = value;
+
+        if (key === "offset" && value !== "0") {
+          setCurrentOffset(+currentSearchParams[key]);
+        }
       });
     } else {
       setSearchParams(currentSearchParams);
@@ -86,8 +96,6 @@ const CharactersPage = () => {
 
     const defaultURL = getDefaultURL();
     const searchString = createSearchParams(currentSearchParams).toString();
-
-    //sendRequest({ url: "DUMMY_DATA.json" }, transformData);
 
     sendRequest({ url: `${defaultURL}&${searchString}` }, transformData);
   }, [
@@ -98,6 +106,7 @@ const CharactersPage = () => {
     setSearchParams,
     state.currentSearchParams,
     isFirstRun,
+    setCurrentOffset,
   ]);
 
   return (
@@ -146,18 +155,21 @@ const CharactersPage = () => {
                 currentPage={state.currentPage}
               />
             )}
+            {isLoading && <Spinner />}
           </Fragment>
         )}
         {error && (
-          <p className={classes["App-main__error"]}>
+          <p className="App-load__error">
             Something went wrong whilst fetching the List. Please try again
             later
           </p>
         )}
       </main>
-      <footer className={classes["App-footer"]}>
-        <small>Done by Pedro Gomes</small>
-      </footer>
+      {!isLoading && !error && (
+        <footer className={classes["App-footer"]}>
+          <small>Done by Pedro Gomes</small>
+        </footer>
+      )}
     </Fragment>
   );
 };

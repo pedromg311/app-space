@@ -1,14 +1,16 @@
-import React, { Fragment } from "react";
+import React, { Fragment, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import CharactersPage from "./pages/CharactersPage";
-import CharacterDetails from "./pages/CharacterDetails";
 import PageNotFound from "./pages/PageNotFound";
 import { CharactersProvider } from "./store/character-data";
 import { ApiProvider } from "./store/api-data";
 
 import classes from "./styles/App.module.css";
+import Spinner from "./components/Spinner";
+import { MAIN_PATH } from "./configs/_app-wide";
 
+const CharacterDetails = React.lazy(() => import("./pages/CharacterDetails"));
 function App() {
   return (
     <Fragment>
@@ -23,15 +25,23 @@ function App() {
       </header>
       <ApiProvider>
         <CharactersProvider>
-          <Routes>
-            <Route
-              path="/"
-              element={<Navigate to="/characters" replace></Navigate>}
-            />
-            <Route path="/characters" element={<CharactersPage />} />
-            <Route path="/characters/:id" element={<CharacterDetails />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
+          <Suspense
+            fallback={
+              <div className={classes["App-loading__container"]}>
+                <Spinner />
+              </div>
+            }
+          >
+            <Routes>
+              <Route
+                path="/"
+                element={<Navigate to={MAIN_PATH} replace></Navigate>}
+              />
+              <Route path={MAIN_PATH} element={<CharactersPage />} />
+              <Route path={`${MAIN_PATH}/:id`} element={<CharacterDetails />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </Suspense>
         </CharactersProvider>
       </ApiProvider>
     </Fragment>
