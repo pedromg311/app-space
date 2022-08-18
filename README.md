@@ -6,6 +6,8 @@
 
 Starts the application in development mode.
 [WARNING] - The API being used has a request limit of 3000 calls per month
+[WARNING] - On install you will probably see 5 high vulnerabilities. These can be "ignored", and are from create-react-app version 5.0.1 (latest as of 18/04/2022).
+Dan Abramov himself wrote an article about it https://overreacted.io/npm-audit-broken-by-design/
 
 ### `npm test`
 
@@ -53,4 +55,6 @@ The App is also visually more appealing on mobile or smaller screens. There's su
 
 #### Post
 
-The Marvel login service seems to be having some issues right now. I can still use the API, but accessing my setting has proven difficult. Hopefully there's no impact
+The Marvel login service seems to be having some issues right now. I can still use the API, but accessing my setting has proven difficult. Hopefully there's no impact.
+
+I could also have removed firebase files from the repo but they are really small i useful for me to have
