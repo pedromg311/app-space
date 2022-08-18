@@ -68,10 +68,10 @@ const CharacterDetails: React.FC = () => {
     return <Spinner />;
   }
 
-  if (currentCharacter) {
+  if (!error && currentCharacter) {
     return (
       <Fragment>
-        {!isLoading && !error && (
+        {!isLoading && (
           <Fragment>
             <main className={classes["Character-details__main"]}>
               <div className={classes["Character-details__header"]}>
