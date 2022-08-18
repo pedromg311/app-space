@@ -19,13 +19,15 @@ function App() {
   return (
     <Fragment>
       <header className={classes["App-header"]}>
-        {/* Empty alt for decorative proposes only */}
-        <img
-          className={classes["App-header__logo"]}
-          alt=""
-          src="/Marvel_Banner.jpg"
-        />
-        <h1 className={classes["App-header__heading"]}>Marvel Finder</h1>
+        <div className={classes["App-header__wrapper"]}>
+          {/* Empty alt for decorative proposes only */}
+          <img
+            className={classes["App-header__logo"]}
+            alt=""
+            src="/Marvel_Banner.jpg"
+          />
+          <h1 className={classes["App-header__heading"]}>Marvel Finder</h1>
+        </div>
       </header>
       <CharactersProvider>
         <Suspense

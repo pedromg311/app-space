@@ -1,10 +1,18 @@
-.App-header {
-  position: relative;
-
+/**
+* iOS doesn't really like flexbox containers with flex
+* direction: row (height is ignored), so i added this wrapper
+**/
+.App-header__wrapper {
   display: flex;
+  flex-direction: row;
   align-items: center;
 
   height: 80px;
+}
+
+.App-header {
+  position: relative;
+
   padding: 0 1rem;
 
   background-color: var(--secondary-color);
