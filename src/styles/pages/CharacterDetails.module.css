@@ -80,7 +80,7 @@
 @media only screen and (min-width: 990px) {
   .Character-details__footer,
   .Character-details__main {
-    margin: var(--spacing-desktop-margin);
+    margin: 0 var(--spacing-desktop-margin) var(--spacing-desktop-margin);
   }
 
   .Character-details__title {
