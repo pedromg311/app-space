@@ -124,30 +124,35 @@ const CharactersPage = () => {
       <main className={classes["App-main"]}>
         {!error && (
           <Fragment>
-            <CSSTransition
-              in={shouldShowFilters}
-              timeout={1000}
-              classNames="App-main__filter-container"
-              nodeRef={nodeRef}
-            >
-              <div
-                className={classes["App-main__filter-container"]}
-                ref={nodeRef}
+            {state.charactersList && (
+              <CSSTransition
+                in={shouldShowFilters}
+                timeout={1000}
+                classNames="App-main__filter-container"
+                nodeRef={nodeRef}
               >
-                <Filters
-                  onFiltersSubmit={handleFiltersSubmit}
-                  onCancel={handleOnClickCancel}
-                />
-                <div className={classes["App-main__filter"]}>
-                  <button
-                    className={`${classes["App-main__filter-button"]} App__button--primary`}
-                    onClick={handleOnClickToggle.bind(null, shouldShowFilters)}
-                  >
-                    {shouldShowFilters ? "Close" : "Open Filters"}
-                  </button>
+                <div
+                  className={classes["App-main__filter-container"]}
+                  ref={nodeRef}
+                >
+                  <Filters
+                    onFiltersSubmit={handleFiltersSubmit}
+                    onCancel={handleOnClickCancel}
+                  />
+                  <div className={classes["App-main__filter"]}>
+                    <button
+                      className={`${classes["App-main__filter-button"]} App__button--primary`}
+                      onClick={handleOnClickToggle.bind(
+                        null,
+                        shouldShowFilters
+                      )}
+                    >
+                      {shouldShowFilters ? "Close" : "Open Filters"}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </CSSTransition>
+              </CSSTransition>
+            )}
 
             <div className={classes["App-main__list-heading"]}>
               <SortBy sortClickHandler={handleSortSubmit} />
@@ -155,6 +160,7 @@ const CharactersPage = () => {
                 Results: {state.numberOfResults}
               </p>
             </div>
+
             {!isLoading && state.charactersList && (
               <CharacterList
                 charactersList={state.charactersList}

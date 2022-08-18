@@ -23,12 +23,13 @@
 
   flex: 1;
 
-  margin: 80px var(--spacing-medium) 0 var(--spacing-medium);
+  margin: var(--spacing-extra-large) var(--spacing-medium) 0
+    var(--spacing-medium);
 }
 
 .App-main__filter-container {
   position: absolute;
-  top: -424px;
+  top: -605px;
 
   width: 100%;
 
@@ -93,7 +94,7 @@
 
 @media only screen and (min-width: 990px) {
   .App-main__filter-container {
-    top: -325px;
+    top: -330px;
     width: 60%;
   }
 
