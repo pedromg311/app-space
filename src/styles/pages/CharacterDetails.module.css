@@ -103,4 +103,8 @@
     grid-auto-rows: minmax(400px, 45vh);
     gap: var(--spacing-large);
   }
+
+  .Character-details__footer {
+    padding-bottom: var(--spacing-large);
+  }
 }
