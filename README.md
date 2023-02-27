@@ -2,7 +2,7 @@
 
 ## Available Scripts
 
-### `npm star`
+### `npm start`
 
 Starts the application in development mode.
 [WARNING] - The API being used has a request limit of 3000 calls per month
